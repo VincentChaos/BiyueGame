@@ -38,7 +38,7 @@ public class BiYueApplication extends Application {
         this.mainThread = Thread.currentThread();
         this.mainThreadId = Process.myTid();
 
-        //生命周期监听回调
+        //生命周期监听回调，根据application的生命周期开启和关闭悬浮球服务
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {

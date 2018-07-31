@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="256dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_dialog"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="41.5dp"
+            android:background="@drawable/logo_biyue"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32.5dp"
+        android:background="@color/bg_gray"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/spacing_smallest"
+        android:paddingRight="@dimen/spacing_smallest"
+        android:layout_marginTop="@dimen/spacing_biger">
+        
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@drawable/icon_person"
+            android:layout_marginRight="10dp"/>
+
+        <EditText
+            android:id="@+id/edit_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/font_small"
+            android:textColor="@color/text_black"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:inputType="textEmailAddress"
+            android:hint="@string/text_account"
+            android:textColorHint="@color/text_gary"
+            android:background="@drawable/bg_edit_trans"
+            android:lines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32.5dp"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="@dimen/spacing_smaller"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/spacing_smallest"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/bg_layout_ingray_midcorner"
+            >
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/icon_key"
+                android:layout_marginRight="@dimen/spacing_smaller"/>
+
+            <EditText
+                android:id="@+id/edit_verification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/text_black"
+                android:hint="@string/text_verification"
+                android:textColorHint="@color/text_gary"
+                android:background="@drawable/bg_edit_trans"
+                android:inputType="number"
+                android:lines="1"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_verification"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@drawable/bg_btn_maincolor_midcorner"
+            android:text="@string/send_verification"
+            android:textSize="@dimen/font_small"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32.5dp"
+        android:background="@drawable/bg_layout_ingray"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/spacing_smallest"
+        android:paddingRight="@dimen/spacing_smallest"
+        android:layout_marginTop="@dimen/spacing_smaller"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@drawable/icon_log"
+            android:layout_marginRight="@dimen/spacing_smaller"/>
+
+        <EditText
+            android:id="@+id/edit_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/font_small"
+            android:textColor="@color/text_black"
+            android:hint="@string/text_pwd"
+            android:inputType="textPassword"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:textColorHint="@color/text_gary"
+            android:background="@drawable/bg_edit_trans"
+            android:lines="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="32.5dp"
+        android:gravity="center"
+        android:background="@drawable/bg_btn_maincolor"
+        android:text="@string/register"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_large"
+        android:layout_marginTop="@dimen/spacing_smaller"
+        />
+
+    <TextView
+        android:id="@+id/btn_return"
+        android:layout_width="match_parent"
+        android:layout_height="32.5dp"
+        android:gravity="center"
+        android:background="@drawable/bg_btn_white"
+        android:text="@string/return_login"
+        android:textColor="@color/main_color"
+        android:textSize="@dimen/font_large"
+        android:layout_marginTop="@dimen/spacing_smaller"
+        android:layout_marginBottom="10dp"
+        />
+
+</LinearLayout>

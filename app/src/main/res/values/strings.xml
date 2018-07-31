@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Biyue</string>
+
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="text_account">请输入手机号码/账号</string>
+    <string name="text_pwd">请输入6-15位字母或数字</string>
+    <string name="login_one">一键登录</string>
+    <string name="forget_pwd">忘记密码></string>
+    <string name="login_other">其他登录</string>
+    <string name="text_verification">请输入验证码</string>
+    <string name="send_verification">发送验证码</string>
+    <string name="return_login">返回登录</string>
+
+</resources>
