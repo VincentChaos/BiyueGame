@@ -14,6 +14,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 public class BiYueApplication extends Application {
 
+
     //获取到主线程的上下文
     private static BiYueApplication context = null;
     //获取到主线程的handler

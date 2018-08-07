@@ -12,6 +12,8 @@ import com.example.rungame10.biyue.Service.FloatService;
  */
 public class FloatActionController {
 
+    public static boolean isLogined = false;
+
     private FloatActionController() {
     }
 
@@ -30,8 +32,10 @@ public class FloatActionController {
      * 开启服务悬浮窗
      */
     public void startServer(Context context) {
-        Intent intent = new Intent(context, FloatService.class);
-        context.startService(intent);
+        if (isLogined) {
+            Intent intent = new Intent(context, FloatService.class);
+            context.startService(intent);
+        }
     }
 
     /**

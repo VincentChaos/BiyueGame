@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         infoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getAccessToken();
+                getPersonMessage();
             }
         });
 
@@ -79,57 +79,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getAccessToken(){
-        SharedPreferences sharedPreferences = getSharedPreferences("user_info",Context.MODE_PRIVATE);
-        String code = sharedPreferences.getString("code","");
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        String WXURL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
-                + Config.APP_ID
-                + "&secret="
-                + Config.APP_SECRET
-                + "&code="
-                + code
-                + "&grant_type=authorization_code";
 
-        //请求获取微信登录的access_token
-        HttpUtil.sendHttpRequest(WXURL, new HttpCallBackListener() {
-            @Override
-            public void onFinish(String response) {
-                //解析以及存储获取到的信息
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String accessToken = jsonObject.getString("access_token");
-                    Log.e("access_token:",accessToken);
-                    String openId = jsonObject.getString("openid");
-                    String refreshToken = jsonObject.getString("refresh_token");
-                    Log.e("openid:"+openId,"refreshToken:"+refreshToken);
-                    if(!accessToken.equals("")){
-                        editor.putString("access_token",accessToken);
-                        editor.apply();
-                    }
-                    if(!refreshToken.equals("")){
-                        editor.putString("refresh_token",refreshToken);
-                        editor.apply();
-                    }
-                    if(!openId.equals("")){
-                        editor.putString("open_id",openId);
-                        editor.apply();
-                        getPersonMessage(accessToken,openId);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        });
-    }
-
-    private void getPersonMessage(String access_token, String openid) {
+    private void getPersonMessage() {
+        SharedPreferences sharedPreferences = getSharedPreferences("wechat_info",Context.MODE_PRIVATE);
+        String access_token = sharedPreferences.getString("access_token","");
+        String openid = sharedPreferences.getString("open_id","");
         String url = "https://api.weixin.qq.com/sns/userinfo?access_token="
                 + access_token
                 + "&openid="

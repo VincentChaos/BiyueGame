@@ -1,6 +1,6 @@
 package com.example.rungame10.biyue.View;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,14 +12,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.rungame10.biyue.Common.Config;
-import com.example.rungame10.biyue.Model.Res;
-import com.example.rungame10.biyue.R;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-
-public class LoginDialog extends Dialog {
+import com.example.rungame10.biyue.Model.MResource;
+import com.example.rungame10.biyue.Presenter.LoginPresenter;
+public class LoginDialog extends AlertDialog {
 
     private Context context;
     private EditText accountEdit,pwdEdit;       //账号编辑框，密码编辑框
@@ -29,41 +24,76 @@ public class LoginDialog extends Dialog {
 
 
     public LoginDialog(@NonNull Context context) {
-        super(context, Res.style.dialogStyle());
+        super(context, MResource.getIdByName(context, "style", "Dialog"));
         this.context = context;
     }
 
 
     @Override
      protected void onCreate(Bundle savedInstanceState) {
-             // TODO Auto-generated method stub
-             super.onCreate(savedInstanceState);
-
-            init();
+         // TODO Auto-generated method stub
+         super.onCreate(savedInstanceState);
+         init();
      }
 
      private void init(){
          LayoutInflater inflater = LayoutInflater.from(context);
-         View view = inflater.inflate(Res.layout.login(),null);
+         View view = inflater.inflate(MResource.getIdByName(context, "layout", "dialog_login"),null);
          setContentView(view);
 
          //声明
-         accountEdit = (EditText)view.findViewById(Res.view.accountEdit());
-         pwdEdit = (EditText)view.findViewById(Res.view.pwdEdit());
-         loginBtn = (TextView)view.findViewById(Res.view.loginBtn());
-         registerBtn = (TextView)view.findViewById(Res.view.registerBtn());
-         esayLogin = (TextView)view.findViewById(Res.view.loginOneBtn());
-         forgetPwd = (TextView)view.findViewById(Res.view.forgetBtn());
-         wechatLogin = (ImageView)view.findViewById(Res.view.wechatBtn());
-         qqLogin = (ImageView)view.findViewById(Res.view.qqBtn());
+         accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_account"));
+         pwdEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_pwd"));
+         loginBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_login"));
+         registerBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_register"));
+         esayLogin = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_login_one"));
+         forgetPwd = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_forget"));
+         wechatLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "btn_wechat"));
+         qqLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "btn_qq"));
+
+         final LoginPresenter loginPresenter = new LoginPresenter(context);
+
+         loginPresenter.setAccount(accountEdit,pwdEdit);
 
          //点击事件
-         loginBtn.setOnClickListener(new ClickListener());
-         registerBtn.setOnClickListener(new ClickListener());
-         esayLogin.setOnClickListener(new ClickListener());
-         forgetPwd.setOnClickListener(new ClickListener());
-         wechatLogin.setOnClickListener(new ClickListener());
-         qqLogin.setOnClickListener(new ClickListener());
+         loginBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 loginPresenter.normalLogin(accountEdit,pwdEdit);
+             }
+         });
+         registerBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 loginPresenter.startRegister();
+                 LoginDialog.this.cancel();
+             }
+         });
+         esayLogin.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+
+             }
+         });
+         forgetPwd.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+
+             }
+         });
+         wechatLogin.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 LoginDialog.this.cancel();
+                 loginPresenter.wechatLogin();
+             }
+         });
+         qqLogin.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+
+             }
+         });
 
          //设置宽高
          Window dialogWindow = getWindow();
@@ -73,33 +103,11 @@ public class LoginDialog extends Dialog {
          lp.height = (int) (d.heightPixels*0.5);
          dialogWindow.setAttributes(lp);
 
+         //显示alertdialog的软键盘
+         dialogWindow.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+         dialogWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
+                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
      }
 
-     private class ClickListener implements View.OnClickListener{
-         @Override
-         public void onClick(View view) {
-             int id = view.getId();
-             switch (id){
-                 case R.id.btn_register:
-                     RegisterDialog registerDialog = new RegisterDialog(context);
-                     registerDialog.show();
-                     LoginDialog.this.cancel();
-                     break;
-                 case R.id.btn_wechat:
-                     //发起登录请求
-                     if(Config.wx_api.isWXAppInstalled()){
-                         SendAuth.Req req = new SendAuth.Req();
-                         req.scope = "snsapi_userinfo";
-                         req.state = "wechat_sdk_login";
-                         Config.wx_api.sendReq(req);
-                     }else {
-                         Toast.makeText(context,"你还没有安装微信",Toast.LENGTH_SHORT).show();
-                     }
-                     LoginDialog.this.cancel();
-                     break;
-             }
-
-
-         }
-     }
 }

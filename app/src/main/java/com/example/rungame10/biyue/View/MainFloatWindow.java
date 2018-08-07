@@ -15,12 +15,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.rungame10.biyue.Common.Config;
+import com.example.rungame10.biyue.Model.MResource;
 import com.example.rungame10.biyue.R;
 
 
 public class MainFloatWindow extends FrameLayout {
     private final static int MSG_UPDATE_POS = 1;
-    private final static int MSG_DELAY = 2;
 
     private Context context;
     private ImageView ivDefault;                     //显示悬浮窗
@@ -59,9 +59,9 @@ public class MainFloatWindow extends FrameLayout {
         super(context,attrs);
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 //        this.context = context.getApplicationContext();
-        LayoutInflater.from(context).inflate(R.layout.float_win_layout,this);
+        LayoutInflater.from(context).inflate(MResource.getIdByName(context, "layout", "float_win_layout"),this);
 
-        ivDefault = (ImageView) findViewById(R.id.iv_default);
+        ivDefault = (ImageView) findViewById(MResource.getIdByName(context, "id", "iv_default"));
 
     }
 
@@ -121,6 +121,7 @@ public class MainFloatWindow extends FrameLayout {
         }//响应点击事件
         if (isClick) {
             Toast.makeText(context, " 点击事件。。", Toast.LENGTH_SHORT).show();
+            isClick = false;
         }
         return true;
     }
