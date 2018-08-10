@@ -1,4 +1,4 @@
-package com.example.rungame10.biyue.Model;
+package com.example.rungame10.biyue.Util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

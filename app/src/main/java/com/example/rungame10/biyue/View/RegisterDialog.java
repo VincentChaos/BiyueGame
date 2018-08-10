@@ -11,7 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.example.rungame10.biyue.Model.MResource;
+import com.example.rungame10.biyue.Util.MResource;
 import com.example.rungame10.biyue.Presenter.RegisterPresenter;
 
 public class RegisterDialog extends AlertDialog {
@@ -52,7 +52,7 @@ public class RegisterDialog extends AlertDialog {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                registerPresenter.register(accountEdit,verificationEdit,pwdEdit);
             }
         });
         returnLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +65,7 @@ public class RegisterDialog extends AlertDialog {
         sendVerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                registerPresenter.sendVeri(accountEdit);
             }
         });
 

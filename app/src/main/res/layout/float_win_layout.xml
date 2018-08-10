@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/iv_default"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_person"/>
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/icon_float_ball"/>
 
 </FrameLayout>

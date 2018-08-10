@@ -30,6 +30,7 @@ public class FloatingManager {
      * 创建一个小悬浮窗。初始位置为屏幕的右部中间位置。
      */
     public static void createFloatWindow(Context context) {
+        Log.e("create","floatWin");
         mParams = new WindowManager.LayoutParams();
         WindowManager windowManager = getWindowManager(context);
         mainFloatWindow = new MainFloatWindow(context);

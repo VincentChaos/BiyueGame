@@ -6,9 +6,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rungame10.biyue.Common.Config;
-import com.example.rungame10.biyue.MainActivity;
-import com.example.rungame10.biyue.Model.HttpCallBackListener;
-import com.example.rungame10.biyue.Model.HttpUtil;
+import com.example.rungame10.biyue.Util.HttpCallBackListener;
+import com.example.rungame10.biyue.Util.HttpUtil;
 import com.example.rungame10.biyue.View.LoginDialog;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -53,62 +52,15 @@ public class LibController {
         FloatActionController.getInstance().startServer(context);
     }
 
-    public void getWXInfo(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
-        String code = sharedPreferences.getString("code","");
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        String WXURL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
-                + Config.APP_ID
-                + "&secret="
-                + Config.APP_SECRET
-                + "&code="
-                + code
-                + "&grant_type=authorization_code";
-
-        //请求获取微信登录的access_token
-        HttpUtil.sendHttpRequest(WXURL, new HttpCallBackListener() {
-            @Override
-            public void onFinish(String response) {
-                //解析以及存储获取到的信息
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String accessToken = jsonObject.getString("access_token");
-                    Log.e("access_token:",accessToken);
-                    String openId = jsonObject.getString("openid");
-                    String refreshToken = jsonObject.getString("refresh_token");
-                    Log.e("openid:"+openId,"refreshToken:"+refreshToken);
-                    if(!accessToken.equals("")){
-                        editor.putString("access_token",accessToken);
-                        editor.apply();
-                    }
-                    if(!refreshToken.equals("")){
-                        editor.putString("refresh_token",refreshToken);
-                        editor.apply();
-                    }
-                    if(!openId.equals("")){
-                        editor.putString("open_id",openId);
-                        editor.apply();
-                        getPersonMessage(accessToken,openId);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        });
-    }
-
-    private void getPersonMessage(String access_token, String openid) {
+    public void getPersonMessage() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("wechat_info",Context.MODE_PRIVATE);
+        String access_token = sharedPreferences.getString("access_token","");
+        String openid = sharedPreferences.getString("open_id","");
         String url = "https://api.weixin.qq.com/sns/userinfo?access_token="
                 + access_token
                 + "&openid="
                 + openid;
-        Log.e("url",url);
+        Log.e("url:",url);
         HttpUtil.sendHttpRequest(url, new HttpCallBackListener() {
             @Override
             public void onFinish(String response) {
@@ -122,6 +74,7 @@ public class LibController {
             }
             @Override
             public void onError(Exception e) {
+                Toast.makeText(context, "通过openid获取数据没有成功", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -6,11 +6,10 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.example.rungame10.biyue.Model.FloatCallBack;
+import com.example.rungame10.biyue.Util.FloatCallBack;
 import com.example.rungame10.biyue.Presenter.FloatActionController;
 import com.example.rungame10.biyue.Presenter.FloatingManager;
 import com.example.rungame10.biyue.Receiver.HomeWatcherReceiver;
-import com.example.rungame10.biyue.View.MainFloatWindow;
 
 public class FloatService extends Service implements FloatCallBack{
     /**
@@ -21,6 +20,7 @@ public class FloatService extends Service implements FloatCallBack{
     @Override
     public void onCreate(){
         super.onCreate();
+        Log.e("start service","yoyoyo");
         FloatActionController.getInstance().registerCall(this);
         //注册广播接收者
         mHomeKeyReceiver = new HomeWatcherReceiver();

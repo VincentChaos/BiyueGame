@@ -15,8 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.rungame10.biyue.Common.Config;
-import com.example.rungame10.biyue.Model.MResource;
-import com.example.rungame10.biyue.R;
+import com.example.rungame10.biyue.Util.MResource;
 
 
 public class MainFloatWindow extends FrameLayout {

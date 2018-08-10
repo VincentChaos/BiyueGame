@@ -1,7 +1,8 @@
 package com.example.rungame10.biyue;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -12,10 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.rungame10.biyue.Common.Config;
-import com.example.rungame10.biyue.Model.HttpCallBackListener;
-import com.example.rungame10.biyue.Model.HttpUtil;
+
+import com.example.rungame10.biyue.Model.PostController;
+import com.example.rungame10.biyue.Model.RequestLogin;
+import com.example.rungame10.biyue.Model.UploadResult;
+import com.example.rungame10.biyue.Util.HttpCallBackListener;
+import com.example.rungame10.biyue.Util.HttpUtil;
 import com.example.rungame10.biyue.View.LoginDialog;
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,13 +34,29 @@ public class MainActivity extends AppCompatActivity {
 
     private String returnWord;
 
+    private int code;
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             // TODO Auto-generated method stub
             super.handleMessage(msg);
-            if(!returnWord.equals("")) {
-                showText.setText(returnWord);
+            AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(MainActivity.this);
+            switch (msg.what){
+                case 0:
+                    alertDialog.setTitle("提示");
+                    alertDialog.setMessage("服务器连接异常，请更换网络环境");
+                    alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    alertDialog.show();
+                    break;
+                case 1:
+                    showText.setText(returnWord);
+                    break;
             }
         }
     };
@@ -72,8 +94,13 @@ public class MainActivity extends AppCompatActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,EmptyActivity.class);
-                startActivity(intent);
+                RequestLogin requestLogin = new RequestLogin();
+                requestLogin.setAppid(3);
+                requestLogin.setTelephone("13631787469");
+                requestLogin.setPassword("cwc19960226");
+                requestLogin.setType("appLogin");
+                requestLogin.setP("android");
+                new PostThread(requestLogin).start();
             }
         });
 
@@ -97,13 +124,11 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     Log.d("略略略", "------获取到的个人信息------" + jsonObject.toString());
                     returnWord = jsonObject.toString();
-                    handler.sendEmptyMessage(0);
+                    handler.sendEmptyMessage(1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
-
             @Override
             public void onError(Exception e) {
                 Toast.makeText(MainActivity.this, "通过openid获取数据没有成功", Toast.LENGTH_SHORT).show();
@@ -111,5 +136,32 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    class PostThread extends Thread{
+        private Object object;
 
+        public PostThread(Object o){
+            this.object = o;
+        }
+
+        public void run(){
+            PostController postController = new PostController(object);
+            String result = postController.getResult();
+            if (result.equals("00")) {
+                Message msg = Message.obtain();
+                msg.what = 0;
+                this.interrupt();
+                handler.sendMessage(msg);
+            } else {
+                  //解析获取的json
+                Gson gson = new Gson();
+                UploadResult response = gson.fromJson(result, UploadResult.class);
+                returnWord = response.getMsg().toString();
+                code = response.getCode();
+                Log.e("code"+code,result);
+                Message msg = Message.obtain();
+                msg.what = 1;
+                handler.sendMessage(msg);
+            }
+        }
+    }
 }

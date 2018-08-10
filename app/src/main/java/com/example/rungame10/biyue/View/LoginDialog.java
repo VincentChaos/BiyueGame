@@ -3,8 +3,11 @@ package com.example.rungame10.biyue.View;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -12,22 +15,48 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.rungame10.biyue.Model.MResource;
+import com.example.rungame10.biyue.Util.MResource;
 import com.example.rungame10.biyue.Presenter.LoginPresenter;
+
+import java.lang.ref.WeakReference;
+
 public class LoginDialog extends AlertDialog {
 
-    private Context context;
+    private static Context context;
     private EditText accountEdit,pwdEdit;       //账号编辑框，密码编辑框
     private TextView loginBtn,registerBtn,esayLogin,forgetPwd;        //登录按钮，注册按钮，一键登录按钮，忘记密码按钮
     private ImageView wechatLogin,qqLogin;      //微信登录按钮，qq登录按钮
 
-
+    public LoginHandler loginHandler = new LoginHandler(this);
 
     public LoginDialog(@NonNull Context context) {
         super(context, MResource.getIdByName(context, "style", "Dialog"));
         this.context = context;
     }
 
+    private static class LoginHandler extends Handler{
+        private WeakReference<LoginDialog> mWeakReference;
+
+        public LoginHandler(LoginDialog reference) {
+            mWeakReference = new WeakReference<LoginDialog>(reference);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            LoginDialog reference = (LoginDialog) mWeakReference.get();
+            ProgressDialog progressDialog = new ProgressDialog(context);
+            if (reference == null) { // the referenced object has been cleared
+                return;
+            }
+            // do something
+            switch (msg.what){
+                case 1:
+                    NotifyDialog notifyDialog = new NotifyDialog(context);
+                    notifyDialog.showNotifyDialog((String) msg.obj);
+                    break;
+            }
+        }
+    }
 
     @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +80,7 @@ public class LoginDialog extends AlertDialog {
          wechatLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "btn_wechat"));
          qqLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "btn_qq"));
 
-         final LoginPresenter loginPresenter = new LoginPresenter(context);
+         final LoginPresenter loginPresenter = new LoginPresenter(context,LoginDialog.this);
 
          loginPresenter.setAccount(accountEdit,pwdEdit);
 
@@ -59,39 +88,45 @@ public class LoginDialog extends AlertDialog {
          loginBtn.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
+                 //登录按钮点击事件
                  loginPresenter.normalLogin(accountEdit,pwdEdit);
              }
          });
+
          registerBtn.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
+                 //注册按钮点击事件
                  loginPresenter.startRegister();
-                 LoginDialog.this.cancel();
              }
          });
+
          esayLogin.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
+                 //一键登录操作
 
              }
          });
+
          forgetPwd.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-
+                 //忘记密码操作
              }
          });
+
          wechatLogin.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 LoginDialog.this.cancel();
+                 //微信登录按钮操作
                  loginPresenter.wechatLogin();
              }
          });
          qqLogin.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-
+                //QQ登录操作
              }
          });
 
@@ -108,6 +143,14 @@ public class LoginDialog extends AlertDialog {
          dialogWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
                  WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+     }
+
+     public void showNotifyDialog(String returnWord){
+        //开启提示弹出窗口
+         Message msg = loginHandler.obtainMessage();
+         msg.what = 1;
+         msg.obj = returnWord;
+         loginHandler.sendMessage(msg);
      }
 
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
+import android.util.Log;
 
 import com.example.rungame10.biyue.Common.Config;
 import com.example.rungame10.biyue.Presenter.FloatActionController;
@@ -96,6 +97,7 @@ public class BiYueApplication extends Application {
         //通过WXAPI工厂，获取api实例
         Config.wx_api = WXAPIFactory.createWXAPI(context, Config.APP_ID,true);
         Config.wx_api.registerApp(Config.APP_ID);
+        Log.e("register","wxapi");
     }
 
     // 获取Application

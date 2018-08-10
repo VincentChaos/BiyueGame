@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.example.rungame10.biyue.Common.Config;
-import com.example.rungame10.biyue.Model.HttpCallBackListener;
-import com.example.rungame10.biyue.Model.HttpUtil;
+import com.example.rungame10.biyue.Util.HttpCallBackListener;
+import com.example.rungame10.biyue.Util.HttpUtil;
 import com.example.rungame10.biyue.Presenter.FloatActionController;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -23,7 +23,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.e("00","00");
         Config.wx_api.handleIntent(getIntent(),this);
         Log.i("savedInstanceState"," sacvsa"+Config.wx_api.handleIntent(getIntent(), this));
 
@@ -38,13 +38,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
     //发送到微信请求的响应结果
     @Override
     public void onResp(BaseResp baseResp) {
+        Log.e("step to wechat resp","testtesttest");
         String result = "";
         SendAuth.Resp re = ((SendAuth.Resp) baseResp);
         String code = re.code;
         switch (baseResp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 result = "发送成功";
-                Log.i("result:",result+"code: "+code);
+                Log.e("result:",result+"code: "+code);
                 SharedPreferences getData = getSharedPreferences("wechat_info", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = getData.edit();
                 editor.putString("code", ((SendAuth.Resp) baseResp).code);
@@ -73,6 +74,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
     private void getAccessToken(){
         SharedPreferences sharedPreferences = getSharedPreferences("wechat_info",Context.MODE_PRIVATE);
         String code = sharedPreferences.getString("code","");
+        Log.e("code~",code);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
         String WXURL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
