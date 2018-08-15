@@ -1,12 +1,12 @@
-package com.example.rungame10.biyue.Model;
+package com.example.rungame10.biyue.Intf;
 
-public class UploadResult {
+public class JsonResult {
     private int code;       //返回状态码
     private Object msg;     //返回信息
 
-    public UploadResult(){}
+    public JsonResult(){}
 
-    public UploadResult(int code, String msg){
+    public JsonResult(int code, Object msg){
         this.code = code;
         this.msg = msg;
     }

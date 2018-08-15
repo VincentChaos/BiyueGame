@@ -7,41 +7,42 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.rungame10.biyue.Common.Config;
-import com.example.rungame10.biyue.Model.RequestLoginAndRegister;
 import com.example.rungame10.biyue.Intf.JsonResult;
+import com.example.rungame10.biyue.Model.RequestCheckVerify;
 import com.example.rungame10.biyue.Model.RequestVerify;
-import com.example.rungame10.biyue.Model.ResponseMsg;
 import com.example.rungame10.biyue.View.CountdownButton;
 import com.example.rungame10.biyue.View.LoginDialog;
 import com.example.rungame10.biyue.View.ProgressDialog;
-import com.example.rungame10.biyue.View.RegisterDialog;
+import com.example.rungame10.biyue.View.VerifyDialog;
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 
-public class RegisterPresenter {
+public class VerifyPresenter {
+
     private Context context;
-    private RegisterDialog registerDialog;
+    private VerifyDialog verifyDialog;
 
     private boolean accountLegal = false;       //用户名是否合法全局变量
-    private boolean pwdLegal = false;           //密码是否合法全局变量
 
-    public RegisterPresenter(Context context,RegisterDialog registerDialog){
+    public VerifyPresenter(Context context, VerifyDialog verifyDialog){
         this.context = context;
-        this.registerDialog = registerDialog;
-
+        this.verifyDialog = verifyDialog;
     }
 
-
+    public void setAccount(EditText accountEdit){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
+        if(sharedPreferences.contains("telephone")){
+            accountEdit.setText(sharedPreferences.getString("telephone",""));
+        }
+    }
 
     public void sendVerify(EditText editText, CountdownButton countBtn){
         //发送验证码按钮操作
 
         //关闭软键盘
         InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm.isActive()&&registerDialog.getCurrentFocus()!=null){
-            if (registerDialog.getCurrentFocus().getWindowToken()!=null) {
-                imm.hideSoftInputFromWindow(registerDialog.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if(imm.isActive()&&verifyDialog.getCurrentFocus()!=null){
+            if (verifyDialog.getCurrentFocus().getWindowToken()!=null) {
+                imm.hideSoftInputFromWindow(verifyDialog.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
 
@@ -56,7 +57,7 @@ public class RegisterPresenter {
 
             //打包请求验证码对象
             final RequestVerify requestVerify = new RequestVerify();
-            requestVerify.setCt(1);       //注册ct值为1
+            requestVerify.setCt(2);       //找回密码ct值为2
             requestVerify.setTelephone(account);
             requestVerify.setType("sdkCode");
 
@@ -67,7 +68,7 @@ public class RegisterPresenter {
                     PostController postController = new PostController(requestVerify);
                     String result = postController.getResult();
                     if(result.equals("00")){
-                        registerDialog.showNotifyDialog("服务器连接异常，请更换网络环境");
+                        verifyDialog.showNotifyDialog("服务器连接异常，请更换网络环境");
                     }else {
                         //用UpLoadResult对象解析获取的json
                         Gson gson = new Gson();
@@ -76,7 +77,7 @@ public class RegisterPresenter {
                         //获取其中code
                         int code = response.getCode();
                         Log.e("code:",code+"");
-                        registerDialog.showNotifyDialog(response.getMsg()+"");
+                        verifyDialog.showNotifyDialog(response.getMsg()+"");
                     }
                     //进度条dialog消失
                     alertDialog.dismiss();
@@ -88,69 +89,55 @@ public class RegisterPresenter {
         }
     }
 
-    public void register(EditText accountEdit, EditText verifyEdit, EditText pwdEdit){
-        //注册按钮操作
+    public void doNext(EditText accountEdit, final EditText verifyEdit){
         final String account = isAccountLegal(accountEdit);
-        final String pwd = isPwdLegal(pwdEdit);
-        String codeStr = verifyEdit.getText().toString().trim();
-        if (accountLegal && pwdLegal){
+        final String codeStr = verifyEdit.getText().toString().trim();
+
+        if(accountLegal){
             if(codeStr.equals("")){
                 Toast.makeText(context,"验证码不能为空",Toast.LENGTH_SHORT).show();
             }else {
-                //注册操作
+                //验证码是否正确，正确跳转至找回密码界面
 
                 //进度条dialog
                 final ProgressDialog alertDialog = new ProgressDialog(context);
                 alertDialog.setCancelable(false);
                 alertDialog.show();
 
-                //打包注册对象
-                final RequestLoginAndRegister requestLoginAndRegister = new RequestLoginAndRegister();
-                requestLoginAndRegister.setAppid(Config.APP_ID);
-                requestLoginAndRegister.setType("appRegister");
-                requestLoginAndRegister.setTelephone(account);
-                requestLoginAndRegister.setPassword(pwd);
-                requestLoginAndRegister.setCode(codeStr);
+                //打包验证验证码对象
+                final RequestCheckVerify requestCheckVerify = new RequestCheckVerify();
+                requestCheckVerify.setCt(2);
+                requestCheckVerify.setTelephone(account);
+                requestCheckVerify.setType("sdkCodeVerify");
+                requestCheckVerify.setCode(codeStr);
 
                 //新建线程使用OkHttp访问网络
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        PostController postController = new PostController(requestLoginAndRegister);
+                        PostController postController = new PostController(requestCheckVerify);
                         String result = postController.getResult();
-                        if (result.equals("00")) {
-                            //调用弹出通知窗口方法
-                            registerDialog.showNotifyDialog("服务器连接异常，请更换网络环境");
-                        } else {
+                        if(result.equals("00")){
+                            verifyDialog.showNotifyDialog("服务器连接异常，请更换网络环境");
+                        }else {
                             //用UpLoadResult对象解析获取的json
                             Gson gson = new Gson();
                             JsonResult response = gson.fromJson(result, JsonResult.class);
 
                             //获取其中code
                             int code = response.getCode();
-                            Log.e("code:",code+"");
+                            if(code == 10001){
+                                //验证成功
 
-                            String returnWord;
-                            if (code == 10001){
-                                //注册成功
-                                LinkedTreeMap linkedTreeMap = (LinkedTreeMap)response.getMsg();
-                                ResponseMsg getResponse = new ResponseMsg(linkedTreeMap);
-                                Log.e("getResponse：","openid:"+getResponse.getOpenid()+"username:"+getResponse.getUsername()+"register:"+getResponse.getRegister()+"");
-                                returnWord = "注册成功，点击确定进行登录操作";
-
-                                //code为成功返回时,保存用户名密码至SharedPreferences
+                                //保存手机号至本地
                                 SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("account",account);
-                                editor.putString("password",pwd);
+                                editor.putString("telephone",account);
                                 editor.apply();
 
-                                //调用弹出通知窗口方法
-                                registerDialog.showNotifyDialog(returnWord,2);
+                                verifyDialog.showNotifyDialog((String)response.getMsg(),account,codeStr);
                             }else {
-                                //调用弹出通知注册失败
-                                returnWord = (String)response.getMsg();
-                                registerDialog.showNotifyDialog(returnWord);
+                                verifyDialog.showNotifyDialog((String)response.getMsg());
                             }
                         }
                         //进度条dialog消失
@@ -161,11 +148,11 @@ public class RegisterPresenter {
         }
     }
 
-    public void returnLogin(){
+    public void doReturn(){
         //返回按钮
         LoginDialog loginDialog = new LoginDialog(context);
         loginDialog.show();
-        registerDialog.cancel();
+        verifyDialog.cancel();
     }
 
     private String isAccountLegal(EditText editText){
@@ -185,22 +172,5 @@ public class RegisterPresenter {
         }
     }
 
-    private String isPwdLegal(EditText editText){
-        //判定用户密码编辑框中输入字符是否合法
-        String s = editText.getText().toString().trim();
-        if (s.equals("")){
-            Toast.makeText(context,"用户密码不能为空",Toast.LENGTH_SHORT).show();
-            return null;
-        }else if(s.length() <= 6){
-            Toast.makeText(context,"用户密码长度不能小于6位",Toast.LENGTH_SHORT).show();
-            return null;
-        }else if(s.length() > 15){
-            Toast.makeText(context,"用户密码长度不能大于15位",Toast.LENGTH_SHORT).show();
-            return null;
-        }else {
-            pwdLegal = true;
-            return s;
-        }
-    }
 
 }

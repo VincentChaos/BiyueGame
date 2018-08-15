@@ -9,6 +9,7 @@ import com.example.rungame10.biyue.Common.Config;
 import com.example.rungame10.biyue.Util.HttpCallBackListener;
 import com.example.rungame10.biyue.Util.HttpUtil;
 import com.example.rungame10.biyue.View.LoginDialog;
+import com.example.rungame10.biyue.View.ProgressDialog;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -25,14 +26,22 @@ public class LibController {
     }
 
     public void showLoginDialog(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
+        if(sharedPreferences.contains("account")&&sharedPreferences.contains("password")){
+            ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            LoginDialog loginDialog = new LoginDialog(context);
+//            loginDialog.
+        }
         LoginDialog loginDialog = new LoginDialog(context);
         loginDialog.show();
     }
 
     private void regToWx(){
         //通过WXAPI工厂，获取api实例
-        Config.wx_api = WXAPIFactory.createWXAPI(context, Config.APP_ID,true);
-        Config.wx_api.registerApp(Config.APP_ID);
+        Config.wx_api = WXAPIFactory.createWXAPI(context, Config.WX_APP_ID,true);
+        Config.wx_api.registerApp(Config.WX_APP_ID);
     }
 
 

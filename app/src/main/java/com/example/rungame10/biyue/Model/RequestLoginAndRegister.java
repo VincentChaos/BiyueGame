@@ -1,13 +1,13 @@
 package com.example.rungame10.biyue.Model;
 
-public class RequestLogin {
+public class RequestLoginAndRegister {
 
-    private String telephone;
-    private String password;
-    private String type;
-    private String code;
-    private int appid;
-    private String p;
+    private String telephone;           //用户手机号
+    private String username;            //用户名
+    private String password;            //账号密码
+    private String type;                //操作类型
+    private String code;                //短信验证码
+    private int appid;                  //应用ID
 
     public String getTelephone() {
         return telephone;
@@ -15,6 +15,14 @@ public class RequestLogin {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -39,14 +47,6 @@ public class RequestLogin {
 
     public void setAppid(int appid) {
         this.appid = appid;
-    }
-
-    public String getP() {
-        return p;
-    }
-
-    public void setP(String p) {
-        this.p = p;
     }
 
     public String getCode() {

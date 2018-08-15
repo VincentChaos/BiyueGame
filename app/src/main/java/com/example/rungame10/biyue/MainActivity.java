@@ -14,9 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.rungame10.biyue.Model.PostController;
-import com.example.rungame10.biyue.Model.RequestLogin;
-import com.example.rungame10.biyue.Model.UploadResult;
+import com.example.rungame10.biyue.Presenter.PostController;
+import com.example.rungame10.biyue.Model.RequestLoginAndRegister;
+import com.example.rungame10.biyue.Intf.JsonResult;
 import com.example.rungame10.biyue.Util.HttpCallBackListener;
 import com.example.rungame10.biyue.Util.HttpUtil;
 import com.example.rungame10.biyue.View.LoginDialog;
@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
 
         initView();
@@ -94,13 +96,12 @@ public class MainActivity extends AppCompatActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RequestLogin requestLogin = new RequestLogin();
-                requestLogin.setAppid(3);
-                requestLogin.setTelephone("13631787469");
-                requestLogin.setPassword("cwc19960226");
-                requestLogin.setType("appLogin");
-                requestLogin.setP("android");
-                new PostThread(requestLogin).start();
+                RequestLoginAndRegister requestLoginAndRegister = new RequestLoginAndRegister();
+                requestLoginAndRegister.setAppid(3);
+                requestLoginAndRegister.setTelephone("13631787469");
+                requestLoginAndRegister.setPassword("cwc19960226");
+                requestLoginAndRegister.setType("appLogin");
+                new PostThread(requestLoginAndRegister).start();
             }
         });
 
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                   //解析获取的json
                 Gson gson = new Gson();
-                UploadResult response = gson.fromJson(result, UploadResult.class);
+                JsonResult response = gson.fromJson(result, JsonResult.class);
                 returnWord = response.getMsg().toString();
                 code = response.getCode();
                 Log.e("code"+code,result);

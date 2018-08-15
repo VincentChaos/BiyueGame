@@ -78,9 +78,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
         String WXURL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
-                + Config.APP_ID
+                + Config.WX_APP_ID
                 + "&secret="
-                + Config.APP_SECRET
+                + Config.WX_APP_SECRET
                 + "&code="
                 + code
                 + "&grant_type=authorization_code";

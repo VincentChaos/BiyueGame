@@ -2,10 +2,11 @@ package com.example.rungame10.biyue.View;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -15,49 +16,55 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.rungame10.biyue.Presenter.VerifyPresenter;
 import com.example.rungame10.biyue.Util.MResource;
-import com.example.rungame10.biyue.Presenter.RegisterPresenter;
 
 import java.lang.ref.WeakReference;
 
-public class RegisterDialog extends AlertDialog {
+public class VerifyDialog extends AlertDialog{
 
     private static Context context;
-    private EditText accountEdit,pwdEdit,verificationEdit;       //账号编辑框，密码编辑框,验证码编辑框
-    private TextView registerBtn,returnLoginBtn;      //注册按钮，返回登录按钮,发送验证码按钮
+    private EditText accountEdit, verifyEdit;
     private CountdownButton sendVerBtn;
+    private TextView nextBtn,returnBtn;
 
-    private RegisterHandler registerHandler = new RegisterHandler(this);
+    private static String telephone;
+    private static String codeStr;
 
+    private VerifyHandler verifyHandler = new VerifyHandler(this);
 
-    public RegisterDialog(@NonNull Context context) {
-        super(context,  MResource.getIdByName(context, "style", "Dialog"));
+    public VerifyDialog(@Nullable Context context) {
+        super(context, MResource.getIdByName(context,"style","Dialog"));
         this.context = context;
-
     }
 
-    private static class RegisterHandler extends Handler {
-        private WeakReference<RegisterDialog> mWeakReference;
+    private static class VerifyHandler extends Handler{
+        private WeakReference<VerifyDialog> mWeakReference;
 
-        public RegisterHandler(RegisterDialog reference) {
-            mWeakReference = new WeakReference<RegisterDialog>(reference);
+        public VerifyHandler(VerifyDialog reference){
+            mWeakReference = new WeakReference<VerifyDialog>(reference);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            RegisterDialog reference = (RegisterDialog) mWeakReference.get();
+            VerifyDialog reference = (VerifyDialog)mWeakReference.get();
+            VerifyDialog verifyDialog = new VerifyDialog(context);
             if (reference == null) { // the referenced object has been cleared
                 return;
             }
             // do something
             switch (msg.what){
-                case 1:
+                case 0:
                     NotifyDialog notifyDialog = new NotifyDialog(context);
-                    if(msg.arg1 == 2){
-                        notifyDialog.showNotifyDialog((String)msg.obj,msg.arg1);
-                    }else {
-                        notifyDialog.showNotifyDialog((String) msg.obj);
-                    }
+                    notifyDialog.showNotifyDialog((String) msg.obj);
+                    break;
+                case 1:
+                    Toast.makeText(context,(String)msg.obj,Toast.LENGTH_SHORT).show();
+                    ConfirmDialog confirmDialog = new ConfirmDialog(context);
+                    confirmDialog.setAccountAndCode(telephone,codeStr);
+                    confirmDialog.show();
                     break;
             }
         }
@@ -72,36 +79,37 @@ public class RegisterDialog extends AlertDialog {
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(MResource.getIdByName(context, "layout", "dialog_register"),null);
+        View view = inflater.inflate(MResource.getIdByName(context, "layout", "dialog_verify"),null);
         setContentView(view);
 
         //声明
         accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_account"));
-        pwdEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_pwd"));
-        verificationEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_verification"));
-        registerBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_register"));
-        returnLoginBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_return"));
+        verifyEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","edit_verification"));
         sendVerBtn = (CountdownButton)view.findViewById(MResource.getIdByName(context, "id", "btn_verification"));
+        nextBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_next"));
+        returnBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_return"));
 
-        final RegisterPresenter registerPresenter = new RegisterPresenter(context,RegisterDialog.this);
+        final VerifyPresenter verifyPresenter = new VerifyPresenter(context,VerifyDialog.this);
+
+        verifyPresenter.setAccount(accountEdit);
 
         //点击事件
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerPresenter.register(accountEdit,verificationEdit,pwdEdit);
-            }
-        });
-        returnLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerPresenter.returnLogin();
-            }
-        });
         sendVerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerPresenter.sendVerify(accountEdit,sendVerBtn);
+                verifyPresenter.sendVerify(accountEdit,sendVerBtn);
+            }
+        });
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                verifyPresenter.doNext(accountEdit,verifyEdit);
+            }
+        });
+        returnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                verifyPresenter.doReturn();
             }
         });
 
@@ -134,7 +142,7 @@ public class RegisterDialog extends AlertDialog {
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         DisplayMetrics d = context.getResources().getDisplayMetrics();     //获取屏幕宽高
         lp.width = (int) (d.widthPixels*0.8);
-        lp.height = (int) (d.heightPixels*0.5);
+        lp.height = (int) (d.heightPixels*0.4);
         dialogWindow.setAttributes(lp);
 
         //显示alertDialog的软键盘
@@ -146,21 +154,22 @@ public class RegisterDialog extends AlertDialog {
 
     public void showNotifyDialog(String returnWord){
         //开启提示弹出窗口
-        Message msg = registerHandler.obtainMessage();
-        msg.what = 1;
+        Message msg = verifyHandler.obtainMessage();
+        msg.what = 0;
         msg.obj = returnWord;
-        registerHandler.sendMessage(msg);
+        verifyHandler.sendMessage(msg);
     }
 
-    public void showNotifyDialog(String returnWord,int flag){
+    public void showNotifyDialog(String returnWord,String telephone,String codeStr){
         //开启提示弹出窗口
-        Message msg = registerHandler.obtainMessage();
+        Message msg = verifyHandler.obtainMessage();
         msg.what = 1;
-        msg.arg1 = flag;
         msg.obj = returnWord;
-        registerHandler.sendMessage(msg);
-        //注册成功退出注册窗口
-        RegisterDialog.this.cancel();
+        this.telephone = telephone;
+        this.codeStr = codeStr;
+        verifyHandler.sendMessage(msg);
+        //验证成功退出窗口
+        VerifyDialog.this.cancel();
     }
 
     @Override

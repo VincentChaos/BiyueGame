@@ -1,4 +1,4 @@
-package com.example.rungame10.biyue.Model;
+package com.example.rungame10.biyue.Presenter;
 
 import android.util.Log;
 
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -18,7 +19,7 @@ import okhttp3.RequestBody;
 
 public class PostController {
     public static final MediaType JSON=MediaType.parse("application/json; charset=utf-8");
-    private static final String HOST = "https://www.biyue8.com/micro/appSdk.php";
+    private static final String HOST = "http://www.biyue8.com/index/micro/api";
     private Object object;
     private String result = "00" ;
 
@@ -30,8 +31,8 @@ public class PostController {
 
         //创建一个OkHttpClient对象
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(500, TimeUnit.MILLISECONDS)
-                .readTimeout(500, TimeUnit.MILLISECONDS)
+                .connectTimeout(2000, TimeUnit.MILLISECONDS)
+                .readTimeout(2000, TimeUnit.MILLISECONDS)
                 .build();
 
         //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
@@ -40,6 +41,7 @@ public class PostController {
         Log.e("createJson",json);
         //json为String类型的json数据
         RequestBody requestBody = RequestBody.create(JSON, json);
+
         //创建一个请求对象
         Request request = new Request.Builder()
                 .url(HOST)

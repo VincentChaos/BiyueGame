@@ -44,15 +44,18 @@ public class LoginDialog extends AlertDialog {
         @Override
         public void handleMessage(Message msg) {
             LoginDialog reference = (LoginDialog) mWeakReference.get();
-            ProgressDialog progressDialog = new ProgressDialog(context);
             if (reference == null) { // the referenced object has been cleared
                 return;
             }
             // do something
+            NotifyDialog notifyDialog = new NotifyDialog(context);
+
             switch (msg.what){
-                case 1:
-                    NotifyDialog notifyDialog = new NotifyDialog(context);
+                case 0:
                     notifyDialog.showNotifyDialog((String) msg.obj);
+                    break;
+                case 1:
+                    notifyDialog.showNotifyDialog((String) msg.obj , 1);
                     break;
             }
         }
@@ -105,7 +108,7 @@ public class LoginDialog extends AlertDialog {
              @Override
              public void onClick(View view) {
                  //一键登录操作
-
+                loginPresenter.OneKeyLogin();
              }
          });
 
@@ -113,6 +116,7 @@ public class LoginDialog extends AlertDialog {
              @Override
              public void onClick(View view) {
                  //忘记密码操作
+                 loginPresenter.forgetPwd();
              }
          });
 
@@ -138,7 +142,7 @@ public class LoginDialog extends AlertDialog {
          lp.height = (int) (d.heightPixels*0.5);
          dialogWindow.setAttributes(lp);
 
-         //显示alertdialog的软键盘
+         //显示alertDialog的软键盘
          dialogWindow.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
          dialogWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
                  WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -148,9 +152,20 @@ public class LoginDialog extends AlertDialog {
      public void showNotifyDialog(String returnWord){
         //开启提示弹出窗口
          Message msg = loginHandler.obtainMessage();
-         msg.what = 1;
+         msg.what = 0;
          msg.obj = returnWord;
          loginHandler.sendMessage(msg);
      }
+
+    public void showNotifyDialog(String returnWord,int flag){
+        //开启提示弹出窗口
+        Message msg = loginHandler.obtainMessage();
+        msg.what = 1;
+        msg.obj = returnWord;
+
+        loginHandler.sendMessage(msg);
+        //登录成功退出登录窗口
+        LoginDialog.this.cancel();
+    }
 
 }

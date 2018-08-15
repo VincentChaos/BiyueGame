@@ -95,8 +95,8 @@ public class BiYueApplication extends Application {
 
     private void regToWx(){
         //通过WXAPI工厂，获取api实例
-        Config.wx_api = WXAPIFactory.createWXAPI(context, Config.APP_ID,true);
-        Config.wx_api.registerApp(Config.APP_ID);
+        Config.wx_api = WXAPIFactory.createWXAPI(context, Config.WX_APP_ID,true);
+        Config.wx_api.registerApp(Config.WX_APP_ID);
         Log.e("register","wxapi");
     }
 
