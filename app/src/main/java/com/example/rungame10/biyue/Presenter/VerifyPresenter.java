@@ -3,6 +3,7 @@ package com.example.rungame10.biyue.Presenter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ public class VerifyPresenter {
     private VerifyDialog verifyDialog;
 
     private boolean accountLegal = false;       //用户名是否合法全局变量
+    private boolean focusFlag = false;
 
     public VerifyPresenter(Context context, VerifyDialog verifyDialog){
         this.context = context;
@@ -35,7 +37,7 @@ public class VerifyPresenter {
         }
     }
 
-    public void sendVerify(EditText editText, CountdownButton countBtn){
+    public void sendVerify(EditText accountEdit, final EditText verifyEdit, CountdownButton countBtn){
         //发送验证码按钮操作
 
         //关闭软键盘
@@ -47,7 +49,7 @@ public class VerifyPresenter {
         }
 
         //绑定手机号后发送验证码
-        String account = isAccountLegal(editText);
+        String account = isAccountLegal(accountEdit);
         if(accountLegal){
             countBtn.start();
             //进度条dialog
@@ -77,6 +79,9 @@ public class VerifyPresenter {
                         //获取其中code
                         int code = response.getCode();
                         Log.e("code:",code+"");
+                        if (code == 10001){
+                            focusFlag = true;
+                        }
                         verifyDialog.showNotifyDialog(response.getMsg()+"");
                     }
                     //进度条dialog消失
@@ -84,8 +89,16 @@ public class VerifyPresenter {
                 }
             }).start();
 
+            if (focusFlag){
+                verifyEdit.setFocusable(true);
+                verifyEdit.setFocusableInTouchMode(true);
+                verifyEdit.requestFocus();
+                focusFlag = false;
+            }
+
             //重置账号合法判别
             accountLegal = false;
+
         }
     }
 

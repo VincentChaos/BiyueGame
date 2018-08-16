@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rungame10.biyue.Presenter.LibController;
 import com.example.rungame10.biyue.Presenter.PostController;
 import com.example.rungame10.biyue.Model.RequestLoginAndRegister;
 import com.example.rungame10.biyue.Intf.JsonResult;
@@ -81,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginDialog loginDialog = new LoginDialog(MainActivity.this);
-                loginDialog.show();
+                LibController libController = new LibController(MainActivity.this);
+                libController.showLoginDialog();
             }
         });
 
@@ -96,12 +97,10 @@ public class MainActivity extends AppCompatActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RequestLoginAndRegister requestLoginAndRegister = new RequestLoginAndRegister();
-                requestLoginAndRegister.setAppid(3);
-                requestLoginAndRegister.setTelephone("13631787469");
-                requestLoginAndRegister.setPassword("cwc19960226");
-                requestLoginAndRegister.setType("appLogin");
-                new PostThread(requestLoginAndRegister).start();
+                SharedPreferences sharedPreferences = getSharedPreferences("user_info",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.apply();
             }
         });
 

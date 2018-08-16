@@ -98,6 +98,12 @@ public class MainFloatWindow extends FrameLayout {
             case MotionEvent.ACTION_UP:
                 //手指放开
                 endTime = System.currentTimeMillis();
+
+                if(location[0] == 0 && location[1] == 0){
+                    location[0] = mParams.x;
+                    location[1] = mParams.y;
+                }
+                Log.e("x:"+location[0],"y:"+location[1]);
                 //当从点击到弹起小于半秒的时候,则判断为点击,如果超过则不响应点击事件
                 if ((endTime - startTime) > 0.1 * 1000L) {
                     isClick = false;
@@ -174,13 +180,11 @@ public class MainFloatWindow extends FrameLayout {
                         message.arg2 = newY;
                         handler.sendMessage(message);
                     }
-
                     try {
                         Thread.sleep(5);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
         }.start();

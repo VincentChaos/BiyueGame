@@ -28,7 +28,7 @@
             android:id="@+id/btn_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="支付"/>
+            android:text="清除登录信息"/>
 
     </LinearLayout>
 

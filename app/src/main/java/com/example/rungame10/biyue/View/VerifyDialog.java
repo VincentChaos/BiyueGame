@@ -97,7 +97,7 @@ public class VerifyDialog extends AlertDialog{
         sendVerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                verifyPresenter.sendVerify(accountEdit,sendVerBtn);
+                verifyPresenter.sendVerify(accountEdit,verifyEdit,sendVerBtn);
             }
         });
         nextBtn.setOnClickListener(new View.OnClickListener() {

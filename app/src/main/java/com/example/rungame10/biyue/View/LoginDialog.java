@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.rungame10.biyue.Util.MResource;
 import com.example.rungame10.biyue.Presenter.LoginPresenter;
@@ -26,8 +27,12 @@ public class LoginDialog extends AlertDialog {
     private EditText accountEdit,pwdEdit;       //账号编辑框，密码编辑框
     private TextView loginBtn,registerBtn,esayLogin,forgetPwd;        //登录按钮，注册按钮，一键登录按钮，忘记密码按钮
     private ImageView wechatLogin,qqLogin;      //微信登录按钮，qq登录按钮
-
+    private LinearLayout ll;                    //含微信、QQ登录layout
     public LoginHandler loginHandler = new LoginHandler(this);
+
+    public LoginPresenter loginPresenter;
+
+    private boolean otherFlag = true;
 
     public LoginDialog(@NonNull Context context) {
         super(context, MResource.getIdByName(context, "style", "Dialog"));
@@ -82,10 +87,15 @@ public class LoginDialog extends AlertDialog {
          forgetPwd = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_forget"));
          wechatLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "btn_wechat"));
          qqLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "btn_qq"));
-
-         final LoginPresenter loginPresenter = new LoginPresenter(context,LoginDialog.this);
-
+         ll = (LinearLayout)view.findViewById(MResource.getIdByName(context,"id","ll"));
+         loginPresenter = new LoginPresenter(context,LoginDialog.this);
          loginPresenter.setAccount(accountEdit,pwdEdit);
+
+         if(otherFlag){
+             ll.setVisibility(View.VISIBLE);
+         }else {
+             ll.setVisibility(View.GONE);
+         }
 
          //点击事件
          loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +149,11 @@ public class LoginDialog extends AlertDialog {
          WindowManager.LayoutParams lp = dialogWindow.getAttributes();
          DisplayMetrics d = context.getResources().getDisplayMetrics();     //获取屏幕宽高
          lp.width = (int) (d.widthPixels*0.8);
-         lp.height = (int) (d.heightPixels*0.5);
+         if(otherFlag){
+             lp.height = (int) (d.heightPixels*0.5);
+         }else {
+             lp.height = (int) (d.heightPixels*0.45);
+         }
          dialogWindow.setAttributes(lp);
 
          //显示alertDialog的软键盘

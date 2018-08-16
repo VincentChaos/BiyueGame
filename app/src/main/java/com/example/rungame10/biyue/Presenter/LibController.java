@@ -28,14 +28,13 @@ public class LibController {
     public void showLoginDialog(){
         SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
         if(sharedPreferences.contains("account")&&sharedPreferences.contains("password")){
-            ProgressDialog progressDialog = new ProgressDialog(context);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
             LoginDialog loginDialog = new LoginDialog(context);
-//            loginDialog.
+            LoginPresenter loginPresenter = new LoginPresenter(context,loginDialog);
+            loginPresenter.quickLogin(sharedPreferences.getString("account",""),sharedPreferences.getString("password",""));
+        }else {
+            LoginDialog loginDialog = new LoginDialog(context);
+            loginDialog.show();
         }
-        LoginDialog loginDialog = new LoginDialog(context);
-        loginDialog.show();
     }
 
     private void regToWx(){

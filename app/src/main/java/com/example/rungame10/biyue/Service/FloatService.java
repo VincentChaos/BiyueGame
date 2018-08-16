@@ -20,7 +20,6 @@ public class FloatService extends Service implements FloatCallBack{
     @Override
     public void onCreate(){
         super.onCreate();
-        Log.e("start service","yoyoyo");
         FloatActionController.getInstance().registerCall(this);
         //注册广播接收者
         mHomeKeyReceiver = new HomeWatcherReceiver();

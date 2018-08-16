@@ -24,6 +24,7 @@ public class BindPresenter {
     private BindDialog bindDialog;
 
     private boolean accountLegal = false;       //用户名是否合法全局变量
+    private boolean focusFlag = false;
 
     public BindPresenter(Context context, BindDialog bindDialog){
         this.context = context;
@@ -72,6 +73,9 @@ public class BindPresenter {
                         //获取其中code
                         int code = response.getCode();
                         Log.e("code:",code+"");
+                        if (code == 10001){
+                            focusFlag = true;
+                        }
                         bindDialog.showNotifyDialog(response.getMsg()+"");
                     }
                     //进度条dialog消失
@@ -144,6 +148,14 @@ public class BindPresenter {
                         alertDialog.dismiss();
                     }
                 }).start();
+
+                if (focusFlag){
+                    verifyEdit.setFocusable(true);
+                    verifyEdit.setFocusableInTouchMode(true);
+                    verifyEdit.requestFocus();
+                    focusFlag = false;
+                }
+                accountLegal = false;
             }
         }
     }

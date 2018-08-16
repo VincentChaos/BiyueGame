@@ -25,16 +25,14 @@ public class RegisterPresenter {
 
     private boolean accountLegal = false;       //用户名是否合法全局变量
     private boolean pwdLegal = false;           //密码是否合法全局变量
-
+    private boolean focusFlag;
     public RegisterPresenter(Context context,RegisterDialog registerDialog){
         this.context = context;
         this.registerDialog = registerDialog;
 
     }
 
-
-
-    public void sendVerify(EditText editText, CountdownButton countBtn){
+    public void sendVerify(EditText accountEdit, final EditText verifyEdit, CountdownButton countBtn){
         //发送验证码按钮操作
 
         //关闭软键盘
@@ -46,7 +44,7 @@ public class RegisterPresenter {
         }
 
         //绑定手机号后发送验证码
-        String account = isAccountLegal(editText);
+        String account = isAccountLegal(accountEdit);
         if(accountLegal){
             countBtn.start();
             //进度条dialog
@@ -76,12 +74,22 @@ public class RegisterPresenter {
                         //获取其中code
                         int code = response.getCode();
                         Log.e("code:",code+"");
+                        if (code == 10001){
+                            focusFlag = true;
+                        }
                         registerDialog.showNotifyDialog(response.getMsg()+"");
                     }
                     //进度条dialog消失
                     alertDialog.dismiss();
                 }
             }).start();
+
+            if (focusFlag){
+                verifyEdit.setFocusable(true);
+                verifyEdit.setFocusableInTouchMode(true);
+                verifyEdit.requestFocus();
+                focusFlag = false;
+            }
 
             //重置账号合法判别
             accountLegal = false;

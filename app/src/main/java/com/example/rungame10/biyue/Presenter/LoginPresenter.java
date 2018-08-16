@@ -194,6 +194,70 @@ public class LoginPresenter {
         loginDialog.cancel();
     }
 
+    public void quickLogin(final String account, final String password){
+        loginDialog.cancel();
+
+        //进度条dialog
+        final ProgressDialog alertDialog = new ProgressDialog(context);
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+        //打包请求登录对象
+        final RequestLoginAndRegister requestLoginAndRegister = new RequestLoginAndRegister();
+        requestLoginAndRegister.setAppid(Config.APP_ID);
+        requestLoginAndRegister.setTelephone(account);
+        requestLoginAndRegister.setPassword(password);
+        requestLoginAndRegister.setType("appLogin");
+
+        //新建线程使用OkHttp访问网络
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PostController postController = new PostController(requestLoginAndRegister);
+                String result = postController.getResult();
+                if (result.equals("00")) {
+                    //调用弹出通知窗口方法
+                    loginDialog.showNotifyDialog("服务器连接异常，请更换网络环境");
+                } else {
+                    //用UpLoadResult对象解析获取的json
+                    Gson gson = new Gson();
+                    JsonResult response = gson.fromJson(result, JsonResult.class);
+
+                    //获取其中code
+                    code = response.getCode();
+                    Log.e("code:",code+"");
+                    if (code == 10001){
+                        //登录成功
+
+                        //因Gson解析时将msg类转换成键值对，则用TreeMap获取
+                        LinkedTreeMap linkedTreeMap = (LinkedTreeMap)response.getMsg();
+
+                        //新建回复实体类，获取TreeMap中的值
+                        ResponseMsg getResponse = new ResponseMsg(linkedTreeMap);
+                        Log.e("getResponse：","openid:"+getResponse.getOpenid()+"username:"+getResponse.getUsername()+"register:"+getResponse.getRegister()+"havephone:"+getResponse.getHavePhone());
+                        returnWord = "登录成功，用户名为："+getResponse.getUsername();
+
+                        //保存用户名密码至SharedPreferences
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("account",account);
+                        editor.putString("password",password);
+                        editor.putString("openid",getResponse.getOpenid());
+                        editor.putString("have_phone",getResponse.getHavePhone());
+                        editor.apply();
+
+                        //调用弹出通知窗口方法
+                        loginDialog.showNotifyDialog(returnWord,1);
+                    }else {
+                        //调用弹出通知登录失败
+                        loginDialog.showNotifyDialog((String) response.getMsg());
+                    }
+                }
+                //进度条dialog消失
+                alertDialog.dismiss();
+            }
+        }).start();
+    }
+
     private String isAccountLegal(EditText editText){
         //判定用户账号编辑框中输入字符是否合法
         String s = editText.getText().toString().trim();
