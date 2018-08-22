@@ -7,7 +7,7 @@ public class RequestLoginAndRegister {
     private String password;            //账号密码
     private String type;                //操作类型
     private String code;                //短信验证码
-    private int appid;                  //应用ID
+    private String appid;                  //应用ID
 
     public String getTelephone() {
         return telephone;
@@ -41,11 +41,11 @@ public class RequestLoginAndRegister {
         this.type = type;
     }
 
-    public int getAppid() {
+    public String getAppid() {
         return appid;
     }
 
-    public void setAppid(int appid) {
+    public void setAppid(String appid) {
         this.appid = appid;
     }
 

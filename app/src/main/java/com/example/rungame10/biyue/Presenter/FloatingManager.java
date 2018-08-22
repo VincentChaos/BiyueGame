@@ -64,7 +64,7 @@ public class FloatingManager {
         //如无保存XY值，以屏幕左上角为原点，设置x、y初始值，相对于gravity
         if(Config.saveX == -100 && Config.saveY == -100) {
             mParams.x = 0;
-            mParams.y = screenHeight / 2;
+            mParams.y = (int)screenHeight / 2;
         }else {
             Log.e("save",Config.saveX+"  "+Config.saveY);
             mParams.x = Config.saveX;

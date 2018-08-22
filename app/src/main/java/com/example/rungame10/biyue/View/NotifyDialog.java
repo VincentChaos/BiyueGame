@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rungame10.biyue.Presenter.FloatActionController;
@@ -12,14 +11,9 @@ import com.example.rungame10.biyue.Presenter.FloatActionController;
 public class NotifyDialog {
 
     private Context context;
-    private boolean isBind = false;           //全局变量，是否绑定手机
 
     public NotifyDialog(Context context){
         this.context = context;
-    }
-
-    public void setBind(){
-        isBind = true;
     }
 
     public void showNotifyDialog(String content){

@@ -2,6 +2,7 @@ package com.example.rungame10.biyue.Presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -9,6 +10,7 @@ import com.example.rungame10.biyue.Common.Config;
 import com.example.rungame10.biyue.Util.HttpCallBackListener;
 import com.example.rungame10.biyue.Util.HttpUtil;
 import com.example.rungame10.biyue.View.LoginDialog;
+import com.example.rungame10.biyue.View.PayDialog;
 import com.example.rungame10.biyue.View.ProgressDialog;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -26,6 +28,7 @@ public class LibController {
     }
 
     public void showLoginDialog(){
+        //登录操作
         SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
         if(sharedPreferences.contains("account")&&sharedPreferences.contains("password")){
             LoginDialog loginDialog = new LoginDialog(context);
@@ -34,6 +37,15 @@ public class LibController {
         }else {
             LoginDialog loginDialog = new LoginDialog(context);
             loginDialog.show();
+        }
+    }
+
+    public void doPay (double money, @Nullable String ext){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
+        if(sharedPreferences.contains("openid")){
+            String uid = sharedPreferences.getString("openid","");
+            PayDialog payDialog = new PayDialog(context,uid,money,ext);
+            payDialog.show();
         }
     }
 

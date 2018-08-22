@@ -15,13 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rungame10.biyue.Presenter.LibController;
-import com.example.rungame10.biyue.Presenter.PostController;
-import com.example.rungame10.biyue.Model.RequestLoginAndRegister;
-import com.example.rungame10.biyue.Intf.JsonResult;
 import com.example.rungame10.biyue.Util.HttpCallBackListener;
 import com.example.rungame10.biyue.Util.HttpUtil;
-import com.example.rungame10.biyue.View.LoginDialog;
-import com.google.gson.Gson;
+import com.example.rungame10.biyue.View.PayDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Button loginBtn;        //登录按钮
     Button infoBtn;         //获取用户信息按钮
     Button payButton;
+    Button webBtn;
     TextView showText;
 
     private String returnWord;
@@ -77,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
         loginBtn = (Button)this.findViewById(R.id.btn_login);
         infoBtn = (Button)this.findViewById(R.id.btn_test);
         payButton = (Button)this.findViewById(R.id.btn_pay);
+        webBtn = (Button)this.findViewById(R.id.btn_web_view);
         showText = (TextView)this.findViewById(R.id.text_show);
+
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,9 +103,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        webBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LibController libController = new LibController(MainActivity.this);
+                libController.doPay(0.01,null);
+            }
+        });
     }
-
-
 
     private void getPersonMessage() {
         SharedPreferences sharedPreferences = getSharedPreferences("wechat_info",Context.MODE_PRIVATE);
@@ -136,32 +140,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    class PostThread extends Thread{
-        private Object object;
-
-        public PostThread(Object o){
-            this.object = o;
-        }
-
-        public void run(){
-            PostController postController = new PostController(object);
-            String result = postController.getResult();
-            if (result.equals("00")) {
-                Message msg = Message.obtain();
-                msg.what = 0;
-                this.interrupt();
-                handler.sendMessage(msg);
-            } else {
-                  //解析获取的json
-                Gson gson = new Gson();
-                JsonResult response = gson.fromJson(result, JsonResult.class);
-                returnWord = response.getMsg().toString();
-                code = response.getCode();
-                Log.e("code"+code,result);
-                Message msg = Message.obtain();
-                msg.what = 1;
-                handler.sendMessage(msg);
-            }
-        }
-    }
 }

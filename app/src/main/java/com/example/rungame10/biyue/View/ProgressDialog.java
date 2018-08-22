@@ -13,6 +13,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import com.example.rungame10.biyue.Util.MResource;
 
+import java.sql.Time;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class ProgressDialog extends AlertDialog{
 
     private Context context;
@@ -26,6 +30,8 @@ public class ProgressDialog extends AlertDialog{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
+
+
     }
 
     @Override
@@ -38,6 +44,7 @@ public class ProgressDialog extends AlertDialog{
         lp.width = (int) (d.widthPixels);
         lp.height = (int) (d.heightPixels);
         dialogWindow.setAttributes(lp);
+        setTime();
     }
 
     private void init(){
@@ -47,7 +54,19 @@ public class ProgressDialog extends AlertDialog{
         //加载动画
         Animation animation = AnimationUtils.loadAnimation(context,MResource.getIdByName(context,"anim","anim_load"));
         circleView.startAnimation(animation);
-
         setContentView(view);
+    }
+
+    private void setTime(){
+        //设置进度条显示时间
+        final Timer time = new Timer();
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                dismiss();
+                cancel();
+                time.cancel();
+            }
+        },4000);
     }
 }

@@ -79,7 +79,7 @@
             android:layout_weight="1"
             android:textSize="@dimen/font_small"
             android:textColor="@color/text_black"
-            android:hint="@string/text_comfirm_pwd"
+            android:hint="@string/text_confirm_pwd"
             android:inputType="textPassword"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:textColorHint="@color/text_gary"

@@ -8,14 +8,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.rungame10.biyue.Intf.JsonResult;
-import com.example.rungame10.biyue.Model.RequestCheckVerify;
 import com.example.rungame10.biyue.Model.RequestLoginAndRegister;
 import com.example.rungame10.biyue.Model.RequestVerify;
 import com.example.rungame10.biyue.View.BindDialog;
 import com.example.rungame10.biyue.View.CountdownButton;
-import com.example.rungame10.biyue.View.LoginDialog;
 import com.example.rungame10.biyue.View.ProgressDialog;
-import com.example.rungame10.biyue.View.VerifyDialog;
 import com.google.gson.Gson;
 
 public class BindPresenter {

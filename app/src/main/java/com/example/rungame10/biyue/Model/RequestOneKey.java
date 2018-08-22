@@ -2,14 +2,14 @@ package com.example.rungame10.biyue.Model;
 
 public class RequestOneKey {
 
-    private int appid;                  //应用ID
+    private String appid;                  //应用ID
     private String type;                //操作类型
 
-    public int getAppid() {
+    public String getAppid() {
         return appid;
     }
 
-    public void setAppid(int appid) {
+    public void setAppid(String appid) {
         this.appid = appid;
     }
 

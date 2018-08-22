@@ -11,11 +11,14 @@
     <string name="login_other">其他登录</string>
     <string name="text_verification">请输入验证码</string>
     <string name="send_verification">发送验证码</string>
-    <string name="text_comfirm_pwd">请再次输入密码</string>
+    <string name="text_confirm_pwd">请再次输入密码</string>
     <string name="text_bind">绑定手机</string>
     <string name="text_next">下一步</string>
     <string name="text_finish">完成</string>
     <string name="return_login">返回登录</string>
     <string name="return_text">返回</string>
     <string name="text_skip">下次再说</string>
+    <string name="text_charge">账号充值</string>
+    <string name="text_switch">切换账号</string>
+    <string name="text_take_back">收回菜单</string>
 </resources>

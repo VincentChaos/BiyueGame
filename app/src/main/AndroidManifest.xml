@@ -36,7 +36,6 @@
 
         <service android:name=".Service.FloatService" />
 
-        <activity android:name=".EmptyActivity"></activity>
     </application>
 
 </manifest>

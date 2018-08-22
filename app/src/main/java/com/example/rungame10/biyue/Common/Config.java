@@ -12,5 +12,6 @@ public class Config {
     //切换应用时保存悬浮窗坐标
     public static int saveX = -100,saveY = -100;
 
-    public static int APP_ID = 4;
+    public static String APP_ID = "by1001";
+    public static String P_ID = "by_jymfyxy";
 }
