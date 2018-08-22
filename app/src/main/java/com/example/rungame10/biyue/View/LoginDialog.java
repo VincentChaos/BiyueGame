@@ -32,7 +32,7 @@ public class LoginDialog extends AlertDialog {
 
     public LoginPresenter loginPresenter;
 
-    private boolean otherFlag = true;
+    private boolean otherFlag = false;
 
     public LoginDialog(@NonNull Context context) {
         super(context, MResource.getIdByName(context, "style", "Dialog"));

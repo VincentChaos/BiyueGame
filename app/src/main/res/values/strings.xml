@@ -21,4 +21,7 @@
     <string name="text_charge">账号充值</string>
     <string name="text_switch">切换账号</string>
     <string name="text_take_back">收回菜单</string>
+    <string name="text_money">输入充值金额</string>
+    <string name="text_pay">跳转支付</string>
+    <string name="text_logout">退出登录</string>
 </resources>

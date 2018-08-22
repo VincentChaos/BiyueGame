@@ -118,6 +118,7 @@ public class LoginPresenter {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("account",account);
                             editor.putString("password",pwd);
+                            editor.putString("user_name",getResponse.getUsername());
                             editor.putString("openid",getResponse.getOpenid());
                             editor.putString("have_phone",getResponse.getHavePhone());
                             editor.apply();
@@ -241,6 +242,7 @@ public class LoginPresenter {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("account",account);
                         editor.putString("password",password);
+                        editor.putString("user_name",getResponse.getUsername());
                         editor.putString("openid",getResponse.getOpenid());
                         editor.putString("have_phone",getResponse.getHavePhone());
                         editor.apply();

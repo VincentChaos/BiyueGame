@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <View
+        android:id="@+id/popup_view_left"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:visibility="gone"/>
+
 
     <ImageView
         android:id="@+id/iv_default"
@@ -11,4 +20,11 @@
         android:layout_height="50dp"
         android:src="@drawable/icon_float_ball"/>
 
-</FrameLayout>
+
+    <View
+        android:id="@+id/popup_view_right"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:visibility="gone"/>
+
+</LinearLayout>
