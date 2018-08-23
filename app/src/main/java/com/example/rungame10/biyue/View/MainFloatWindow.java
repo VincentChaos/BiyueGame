@@ -3,10 +3,7 @@ package com.example.rungame10.biyue.View;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -93,6 +90,7 @@ public class MainFloatWindow extends LinearLayout {
                     set.play(trans).with(alpha);
                     set.setDuration(100);
                     set.start();
+                    isHide = false;
                     break;
             }
         }
@@ -186,11 +184,8 @@ public class MainFloatWindow extends LinearLayout {
         }//响应点击事件
         if (isClick) {
             if (isHide){
-                isHide = false;
-                canHide = true;
                 handler.sendEmptyMessage(MSG_WINDOW_SHOW);
-                waitToHideWindow();
-            }else {
+            }else{
                 //启动悬浮窗子菜单
                 canHide = false;
                 if(isOnLeft){
@@ -279,7 +274,7 @@ public class MainFloatWindow extends LinearLayout {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if (canHide) {
+                    if (canHide && !isHide) {
                         handler.sendEmptyMessage(MSG_WINDOW_HIDE);
                     } else {
                         interrupt();
