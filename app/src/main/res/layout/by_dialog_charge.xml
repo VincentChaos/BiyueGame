@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     android:gravity="center_horizontal"
-    android:background="@drawable/bg_dialog"
+    android:background="@drawable/by_bg_dialog"
     android:padding="20dp"
     android:orientation="vertical">
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="41.5dp"
-        android:background="@drawable/logo_biyue"
+        android:background="@drawable/by_logo_biyue"
         android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
@@ -24,28 +24,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="32.5dp"
-            android:background="@color/bg_gray"
+            android:background="@color/by_bg_gray"
             android:layout_gravity="center"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/spacing_small"
-            android:paddingRight="@dimen/spacing_small">
+            android:paddingLeft="@dimen/by_spacing_small"
+            android:paddingRight="@dimen/by_spacing_small">
 
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="18dp"
-                android:background="@drawable/icon_charge2"
+                android:background="@drawable/by_icon_charge"
                 android:layout_marginRight="10dp"/>
 
             <EditText
-                android:id="@+id/edit_money"
+                android:id="@+id/by_edit_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/font_small"
-                android:textColor="@color/text_black"
+                android:textSize="@dimen/by_font_small"
+                android:textColor="@color/by_text_black"
                 android:inputType="numberDecimal"
-                android:hint="@string/text_money"
-                android:textColorHint="@color/text_gary"
-                android:background="@drawable/bg_edit_trans"
+                android:hint="@string/by_text_money"
+                android:textColorHint="@color/by_text_gary"
+                android:background="@drawable/by_bg_edit_trans"
                 android:lines="1"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -56,13 +56,13 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/btn_pay"
+        android:id="@+id/by_btn_pay"
         android:layout_width="match_parent"
         android:layout_height="32.5dp"
         android:gravity="center"
-        android:textColor="@color/white"
-        android:text="@string/text_pay"
-        android:textSize="@dimen/font_normal"
-        android:background="@drawable/bg_btn_main_color"/>
+        android:textColor="@color/by_white"
+        android:text="@string/by_text_pay"
+        android:textSize="@dimen/by_font_normal"
+        android:background="@drawable/by_bg_btn_main_color"/>
 
 </LinearLayout>

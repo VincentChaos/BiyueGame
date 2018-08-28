@@ -31,7 +31,7 @@ public class BindDialog extends AlertDialog{
     private VerifyHandler verifyHandler = new VerifyHandler(this);
 
     public BindDialog(@Nullable Context context) {
-        super(context, MResource.getIdByName(context,"style","Dialog"));
+        super(context, MResource.getIdByName(context,"style","by_Dialog"));
         this.context = context;
     }
 
@@ -50,13 +50,15 @@ public class BindDialog extends AlertDialog{
                 return;
             }
             // do something
-            NotifyDialog notifyDialog = new NotifyDialog(context);
+
             switch (msg.what){
                 case 0:
-                    notifyDialog.showNotifyDialog((String) msg.obj);
+                    NotifyDialog notifyDialog = new NotifyDialog(context,(String) msg.obj);
+                    notifyDialog.show();
                     break;
                 case 1:
-                    notifyDialog.showNotifyDialog((String) msg.obj,msg.arg1);
+                    NotifyDialog notifyDialog2 = new NotifyDialog(context,(String) msg.obj,msg.arg1);
+                    notifyDialog2.show();
                     break;
             }
         }
@@ -71,15 +73,15 @@ public class BindDialog extends AlertDialog{
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(MResource.getIdByName(context, "layout", "dialog_bind"),null);
+        View view = inflater.inflate(MResource.getIdByName(context, "layout", "by_dialog_bind"),null);
         setContentView(view);
 
         //声明
-        accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_account"));
-        verifyEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","edit_verification"));
-        sendVerBtn = (CountdownButton)view.findViewById(MResource.getIdByName(context, "id", "btn_verification"));
-        bindBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_bind"));
-        skipBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_return"));
+        accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "by_edit_account"));
+        verifyEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","by_edit_verification"));
+        sendVerBtn = (CountdownButton)view.findViewById(MResource.getIdByName(context, "id", "by_btn_verification"));
+        bindBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_btn_bind"));
+        skipBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_btn_return"));
 
         final BindPresenter bindPresenter = new BindPresenter(context,BindDialog.this);
 

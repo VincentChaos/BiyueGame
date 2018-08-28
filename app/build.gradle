@@ -1,18 +1,20 @@
-apply plugin: 'com.android.application'
-//apply plugin: 'com.android.library'
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.rungame10.biyue"
+//        applicationId "com.example.rungame10.biyue"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+//        versionCode 1
+//        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true          //是否代码混淆
+            minifyEnabled true          //防止方法数量超过65536导致错误
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -27,12 +29,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     implementation 'com.google.code.gson:gson:2.7'
-    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
-    //retrofit
-    implementation 'com.squareup.retrofit2:retrofit-adapters:2.2.0'
     implementation 'com.squareup.okhttp3:okhttp:3.6.0'
-    implementation 'com.packetzoom:pz-okhttp3-interceptor:3.2.25'
-    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
-    //转换器，请求结果转换成Model
-    implementation 'com.android.support:recyclerview-v7:28.0.0-alpha3'
+
 }

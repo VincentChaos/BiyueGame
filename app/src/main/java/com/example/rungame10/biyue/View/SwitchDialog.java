@@ -19,13 +19,11 @@ import com.example.rungame10.biyue.Util.MResource;
 
 public class SwitchDialog extends AlertDialog {
     private Context context;
-    private PopupWindow popupWindow;
     private TextView nameText,logoutBtn;
 
-    public SwitchDialog(Context context,PopupWindow popupWindow){
-        super(context, MResource.getIdByName(context, "style", "Dialog"));
+    public SwitchDialog(Context context){
+        super(context, MResource.getIdByName(context, "style", "by_Dialog"));
         this.context = context;
-        this.popupWindow = popupWindow;
     }
 
     @Override
@@ -37,12 +35,12 @@ public class SwitchDialog extends AlertDialog {
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(MResource.getIdByName(context,"layout","dialog_switch"),null);
+        View view = inflater.inflate(MResource.getIdByName(context,"layout","by_dialog_switch"),null);
         setContentView(view);
 
         //声明
-        nameText = (TextView)view.findViewById(MResource.getIdByName(context,"id","text_name"));
-        logoutBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_logout"));
+        nameText = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_text_name"));
+        logoutBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_btn_logout"));
 
         final SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
         String nameStr = "用户名称： " + sharedPreferences.getString("user_name","");
@@ -54,7 +52,6 @@ public class SwitchDialog extends AlertDialog {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.apply();
-                popupWindow.dismiss();
                 FloatActionController.isLogined = false;
                 FloatActionController.getInstance().stopServer(context);
                 SwitchDialog.this.cancel();

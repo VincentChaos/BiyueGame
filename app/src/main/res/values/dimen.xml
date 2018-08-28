@@ -5,25 +5,25 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- 字体 -->
-    <dimen name="font_larger">22sp</dimen>
-    <dimen name="font_large">18sp</dimen>
-    <dimen name="font_normal">16sp</dimen>
-    <dimen name="font_small">14sp</dimen>
-    <dimen name="font_smaller">12sp</dimen>
-    <dimen name="font_smallest">10sp</dimen>
-    <dimen name="font_separate">8sp</dimen>
+    <dimen name="by_font_larger">22sp</dimen>
+    <dimen name="by_font_large">18sp</dimen>
+    <dimen name="by_font_normal">16sp</dimen>
+    <dimen name="by_font_small">14sp</dimen>
+    <dimen name="by_font_smaller">12sp</dimen>
+    <dimen name="by_font_smallest">10sp</dimen>
+    <dimen name="by_font_separate">8sp</dimen>
 
     <!-- margin and padding -->
-    <dimen name="spacing_huge">40dp</dimen>
-    <dimen name="spacing_larger">34dp</dimen>
-    <dimen name="spacing_large">24dp</dimen>
-    <dimen name="spacing_bigger">20dp</dimen>
-    <dimen name="spacing_big">18dp</dimen>
-    <dimen name="spacing_normal">14dp</dimen>
-    <dimen name="spacing_small">12dp</dimen>
-    <dimen name="spacing_smaller">10dp</dimen>
-    <dimen name="spacing_smallest">8dp</dimen>
-    <dimen name="spacing_tiny">6dp</dimen>
-    <dimen name="spacing_tinier">4dp</dimen>
-    <dimen name="spacing_tiniest">2dp</dimen>
+    <dimen name="by_spacing_huge">40dp</dimen>
+    <dimen name="by_spacing_larger">34dp</dimen>
+    <dimen name="by_spacing_large">24dp</dimen>
+    <dimen name="by_spacing_bigger">20dp</dimen>
+    <dimen name="by_spacing_big">18dp</dimen>
+    <dimen name="by_spacing_normal">14dp</dimen>
+    <dimen name="by_spacing_small">12dp</dimen>
+    <dimen name="by_spacing_smaller">10dp</dimen>
+    <dimen name="by_spacing_smallest">8dp</dimen>
+    <dimen name="by_spacing_tiny">6dp</dimen>
+    <dimen name="by_spacing_tinier">4dp</dimen>
+    <dimen name="by_spacing_tiniest">2dp</dimen>
 </resources>

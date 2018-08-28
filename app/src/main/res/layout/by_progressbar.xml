@@ -2,18 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/transparent"
+    android:background="@color/by_transparent"
     android:gravity="center"
     android:minHeight="60dp"
     android:minWidth="180dp"
     android:orientation="vertical"
     android:padding="10dp"
-    android:id="@+id/ll">
+    android:id="@+id/by_ll">
 
     <ImageView
-        android:id="@+id/progressbar"
+        android:id="@+id/by_progressbar"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/progressbar"/>
+        android:background="@drawable/by_progressbar"/>
 
 </LinearLayout>

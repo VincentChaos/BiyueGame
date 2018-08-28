@@ -78,7 +78,6 @@ public class VerifyPresenter {
 
                         //获取其中code
                         int code = response.getCode();
-                        Log.e("code:",code+"");
                         if (code == 10001){
                             focusFlag = true;
                         }

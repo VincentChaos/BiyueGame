@@ -31,7 +31,7 @@ public class RegisterDialog extends AlertDialog {
 
 
     public RegisterDialog(@NonNull Context context) {
-        super(context,  MResource.getIdByName(context, "style", "Dialog"));
+        super(context,  MResource.getIdByName(context, "style", "by_Dialog"));
         this.context = context;
 
     }
@@ -52,11 +52,12 @@ public class RegisterDialog extends AlertDialog {
             // do something
             switch (msg.what){
                 case 1:
-                    NotifyDialog notifyDialog = new NotifyDialog(context);
                     if(msg.arg1 == 2){
-                        notifyDialog.showNotifyDialog((String)msg.obj,msg.arg1);
+                        NotifyDialog notifyDialog = new NotifyDialog(context,(String)msg.obj,msg.arg1);
+                        notifyDialog.show();
                     }else {
-                        notifyDialog.showNotifyDialog((String) msg.obj);
+                        NotifyDialog notifyDialog = new NotifyDialog(context,(String) msg.obj);
+                        notifyDialog.show();
                     }
                     break;
             }
@@ -72,16 +73,16 @@ public class RegisterDialog extends AlertDialog {
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(MResource.getIdByName(context, "layout", "dialog_register"),null);
+        View view = inflater.inflate(MResource.getIdByName(context, "layout", "by_dialog_register"),null);
         setContentView(view);
 
         //声明
-        accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_account"));
-        pwdEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_pwd"));
-        verificationEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_verification"));
-        registerBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_register"));
-        returnLoginBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_return"));
-        sendVerBtn = (CountdownButton)view.findViewById(MResource.getIdByName(context, "id", "btn_verification"));
+        accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "by_edit_account"));
+        pwdEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "by_edit_pwd"));
+        verificationEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "by_edit_verification"));
+        registerBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "by_btn_register"));
+        returnLoginBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "by_btn_return"));
+        sendVerBtn = (CountdownButton)view.findViewById(MResource.getIdByName(context, "id", "by_btn_verification"));
 
         final RegisterPresenter registerPresenter = new RegisterPresenter(context,RegisterDialog.this);
 

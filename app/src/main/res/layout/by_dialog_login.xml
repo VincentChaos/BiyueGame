@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:gravity="center_horizontal"
-    android:background="@drawable/bg_dialog"
+    android:background="@drawable/by_bg_dialog"
     android:padding="10dp"
     android:orientation="vertical">
 
@@ -17,7 +17,7 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="41.5dp"
-            android:background="@drawable/logo_biyue"
+            android:background="@drawable/by_logo_biyue"
             android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
@@ -26,31 +26,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="32.5dp"
-        android:background="@color/bg_gray"
+        android:background="@color/by_bg_gray"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/spacing_smallest"
-        android:paddingRight="@dimen/spacing_smallest"
-        android:layout_marginTop="@dimen/spacing_bigger"
+        android:paddingLeft="@dimen/by_spacing_smallest"
+        android:paddingRight="@dimen/by_spacing_smallest"
+        android:layout_marginTop="@dimen/by_spacing_bigger"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:background="@drawable/icon_person"
+            android:background="@drawable/by_icon_person"
             android:layout_marginRight="10dp"/>
 
         <EditText
-            android:id="@+id/edit_account"
+            android:id="@+id/by_edit_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="@dimen/font_small"
-            android:textColor="@color/text_black"
+            android:textSize="@dimen/by_font_small"
+            android:textColor="@color/by_text_black"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:inputType="textEmailAddress"
-            android:hint="@string/text_account"
-            android:textColorHint="@color/text_gary"
-            android:background="@drawable/bg_edit_trans"
+            android:hint="@string/by_text_account"
+            android:textColorHint="@color/by_text_gary"
+            android:background="@drawable/by_bg_edit_trans"
             android:lines="1"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -61,31 +61,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="32.5dp"
-        android:background="@drawable/bg_layout_ingray"
+        android:background="@drawable/by_bg_layout_ingray"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/spacing_smallest"
-        android:paddingRight="@dimen/spacing_smallest"
-        android:layout_marginTop="@dimen/spacing_smallest"
+        android:paddingLeft="@dimen/by_spacing_smallest"
+        android:paddingRight="@dimen/by_spacing_smallest"
+        android:layout_marginTop="@dimen/by_spacing_smallest"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:background="@drawable/icon_log"
-            android:layout_marginRight="@dimen/spacing_smaller"/>
+            android:background="@drawable/by_icon_log"
+            android:layout_marginRight="@dimen/by_spacing_smaller"/>
 
         <EditText
-            android:id="@+id/edit_pwd"
+            android:id="@+id/by_edit_pwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="@dimen/font_small"
-            android:textColor="@color/text_black"
-            android:hint="@string/text_pwd"
+            android:textSize="@dimen/by_font_small"
+            android:textColor="@color/by_text_black"
+            android:hint="@string/by_text_pwd"
             android:inputType="textPassword"
             android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:textColorHint="@color/text_gary"
-            android:background="@drawable/bg_edit_trans"
+            android:textColorHint="@color/by_text_gary"
+            android:background="@drawable/by_bg_edit_trans"
             android:lines="1"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -94,45 +94,45 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/btn_login"
+        android:id="@+id/by_btn_login"
         android:layout_width="match_parent"
         android:layout_height="32.5dp"
         android:gravity="center"
-        android:background="@drawable/bg_btn_main_color"
-        android:text="@string/login"
-        android:textColor="@color/white"
-        android:textSize="@dimen/font_large"
-        android:layout_marginTop="@dimen/spacing_smallest"
+        android:background="@drawable/by_bg_btn_main_color"
+        android:text="@string/by_login"
+        android:textColor="@color/by_white"
+        android:textSize="@dimen/by_font_large"
+        android:layout_marginTop="@dimen/by_spacing_smallest"
         />
 
     <TextView
-        android:id="@+id/btn_register"
+        android:id="@+id/by_btn_register"
         android:layout_width="match_parent"
         android:layout_height="32.5dp"
         android:gravity="center"
-        android:background="@drawable/bg_btn_white"
-        android:text="@string/register"
-        android:textColor="@color/main_color"
-        android:textSize="@dimen/font_large"
-        android:layout_marginTop="@dimen/spacing_smallest"
+        android:background="@drawable/by_bg_btn_white"
+        android:text="@string/by_register"
+        android:textColor="@color/by_main_color"
+        android:textSize="@dimen/by_font_large"
+        android:layout_marginTop="@dimen/by_spacing_smallest"
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_tinier"
-        android:paddingLeft="@dimen/spacing_normal"
-        android:paddingRight="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/by_spacing_tinier"
+        android:paddingLeft="@dimen/by_spacing_normal"
+        android:paddingRight="@dimen/by_spacing_normal"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/btn_login_one"
+            android:id="@+id/by_btn_login_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_one"
-            android:padding="@dimen/spacing_tiniest"
-            android:textColor="@color/main_color"
-            android:textSize="@dimen/font_smaller"/>
+            android:text="@string/by_login_one"
+            android:padding="@dimen/by_spacing_tiniest"
+            android:textColor="@color/by_main_color"
+            android:textSize="@dimen/by_font_smaller"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -140,18 +140,18 @@
             android:layout_weight="1"/>
 
         <TextView
-            android:id="@+id/btn_forget"
+            android:id="@+id/by_btn_forget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/forget_pwd"
-            android:padding="@dimen/spacing_tiniest"
-            android:textColor="@color/main_color"
-            android:textSize="@dimen/font_smaller"/>
+            android:text="@string/by_forget_pwd"
+            android:padding="@dimen/by_spacing_tiniest"
+            android:textColor="@color/by_main_color"
+            android:textSize="@dimen/by_font_smaller"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll"
+        android:id="@+id/by_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -159,30 +159,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/spacing_tiniest"
-            android:paddingRight="@dimen/spacing_tiniest"
+            android:paddingLeft="@dimen/by_spacing_tiniest"
+            android:paddingRight="@dimen/by_spacing_tiniest"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="0.5dp"
-                android:background="@color/separate"
+                android:background="@color/by_separate"
                 android:layout_weight="1"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_other"
-                android:textColor="@color/separate"
-                android:textSize="@dimen/font_smallest"
-                android:layout_marginLeft="@dimen/spacing_smallest"
-                android:layout_marginRight="@dimen/spacing_smallest"/>
+                android:text="@string/by_login_other"
+                android:textColor="@color/by_separate"
+                android:textSize="@dimen/by_font_smallest"
+                android:layout_marginLeft="@dimen/by_spacing_smallest"
+                android:layout_marginRight="@dimen/by_spacing_smallest"/>
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="0.5dp"
-                android:background="@color/separate"
+                android:background="@color/by_separate"
                 android:layout_weight="1"/>
 
         </LinearLayout>
@@ -192,20 +192,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="@dimen/spacing_tinier"
+            android:layout_marginTop="@dimen/by_spacing_tinier"
             android:layout_weight="1">
 
             <ImageView
-                android:id="@+id/btn_wechat"
+                android:id="@+id/by_btn_wechat"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/logo_wechat"/>
+                android:background="@drawable/by_logo_wechat"/>
 
             <ImageView
-                android:id="@+id/btn_qq"
+                android:id="@+id/by_btn_qq"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/logo_qq"
+                android:background="@drawable/by_logo_qq"
                 android:layout_marginLeft="80dp"/>
 
         </LinearLayout>

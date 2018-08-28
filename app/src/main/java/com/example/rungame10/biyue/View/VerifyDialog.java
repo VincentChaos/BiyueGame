@@ -36,7 +36,7 @@ public class VerifyDialog extends AlertDialog{
     private VerifyHandler verifyHandler = new VerifyHandler(this);
 
     public VerifyDialog(@Nullable Context context) {
-        super(context, MResource.getIdByName(context,"style","Dialog"));
+        super(context, MResource.getIdByName(context,"style","by_Dialog"));
         this.context = context;
     }
 
@@ -57,8 +57,8 @@ public class VerifyDialog extends AlertDialog{
             // do something
             switch (msg.what){
                 case 0:
-                    NotifyDialog notifyDialog = new NotifyDialog(context);
-                    notifyDialog.showNotifyDialog((String) msg.obj);
+                    NotifyDialog notifyDialog = new NotifyDialog(context,(String) msg.obj);
+                    notifyDialog.show();
                     break;
                 case 1:
                     Toast.makeText(context,(String)msg.obj,Toast.LENGTH_SHORT).show();
@@ -79,15 +79,15 @@ public class VerifyDialog extends AlertDialog{
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(MResource.getIdByName(context, "layout", "dialog_verify"),null);
+        View view = inflater.inflate(MResource.getIdByName(context, "layout", "by_dialog_verify"),null);
         setContentView(view);
 
         //声明
-        accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_account"));
-        verifyEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","edit_verification"));
-        sendVerBtn = (CountdownButton)view.findViewById(MResource.getIdByName(context, "id", "btn_verification"));
-        nextBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_next"));
-        returnBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_return"));
+        accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "by_edit_account"));
+        verifyEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","by_edit_verification"));
+        sendVerBtn = (CountdownButton)view.findViewById(MResource.getIdByName(context, "id", "by_btn_verification"));
+        nextBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_btn_next"));
+        returnBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_btn_return"));
 
         final VerifyPresenter verifyPresenter = new VerifyPresenter(context,VerifyDialog.this);
 

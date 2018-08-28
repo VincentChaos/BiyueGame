@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Message;
@@ -30,13 +31,12 @@ public class MainFloatWindow extends LinearLayout {
 
     private Context context;
     private ImageView ivDefault;                     //显示悬浮窗
-    private View popupLeft,popupRight;
     private boolean isClick;
     private float mTouchStartX, mTouchStartY;        //手指按下时坐标
     private long startTime,endTime;
     private WindowManager.LayoutParams mParams;
     private WindowManager mWindowManager;
-    private boolean isOnLeft = true;                //控件是否在左边
+    private boolean isOnLeft;                //控件是否在左边
     private int[] location = {-100,-100};
     int moveParam;                                  //自动贴边移动数值
 
@@ -66,7 +66,7 @@ public class MainFloatWindow extends LinearLayout {
                     if (isOnLeft) {
                         int toX = -getWidth()/2;
                         ObjectAnimator trans = ObjectAnimator.ofFloat(ivDefault,"translationX",0,toX);
-                        ObjectAnimator alpha = ObjectAnimator.ofFloat(ivDefault,"alpha",1.0f,0.3f);
+                        ObjectAnimator alpha = ObjectAnimator.ofFloat(ivDefault,"alpha",1.0f,0.4f);
                         AnimatorSet set = new AnimatorSet();
                         set.play(trans).with(alpha);
                         set.setDuration(100);
@@ -74,7 +74,7 @@ public class MainFloatWindow extends LinearLayout {
                     }else {
                         int toX = getWidth()/2;
                         ObjectAnimator trans = ObjectAnimator.ofFloat(ivDefault,"translationX",0,toX);
-                        ObjectAnimator alpha = ObjectAnimator.ofFloat(ivDefault,"alpha",1.0f,0.3f);
+                        ObjectAnimator alpha = ObjectAnimator.ofFloat(ivDefault,"alpha",1.0f,0.4f);
                         AnimatorSet set = new AnimatorSet();
                         set.play(trans).with(alpha);
                         set.setDuration(100);
@@ -85,7 +85,7 @@ public class MainFloatWindow extends LinearLayout {
                 case MSG_WINDOW_SHOW:
                     //显示悬浮窗
                     ObjectAnimator trans = ObjectAnimator.ofFloat(ivDefault,"translationX",0,0);
-                    ObjectAnimator alpha = ObjectAnimator.ofFloat(ivDefault,"alpha",0.3f,1f);
+                    ObjectAnimator alpha = ObjectAnimator.ofFloat(ivDefault,"alpha",0.4f,1f);
                     AnimatorSet set = new AnimatorSet();
                     set.play(trans).with(alpha);
                     set.setDuration(100);
@@ -99,14 +99,17 @@ public class MainFloatWindow extends LinearLayout {
     public MainFloatWindow(Context context, AttributeSet attrs) {
         super(context,attrs);
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        LayoutInflater.from(context).inflate(MResource.getIdByName(context, "layout", "float_win_layout"),this);
-        ivDefault = (ImageView) findViewById(MResource.getIdByName(context, "id", "iv_default"));
-        popupLeft = this.findViewById(MResource.getIdByName(context,"id","popup_view_left"));
-        popupRight = this.findViewById(MResource.getIdByName(context,"id","popup_view_right"));
+        LayoutInflater.from(context).inflate(MResource.getIdByName(context, "layout", "by_float_win_layout"),this);
+        ivDefault = (ImageView) findViewById(MResource.getIdByName(context, "id", "by_iv_default"));
         if(location[0] == -100 && location[1] == -100){
             //位置未更新
+            if(Config.saveX <= 0){
+                isOnLeft = true;
+            }else {
+                isOnLeft = false;
+            }
             waitToHideWindow();
-            location[0] = 0;
+            location[0] = (int)MainFloatWindow.this.getY();;
             location[1] = (int)MainFloatWindow.this.getY();
         }
     }
@@ -123,9 +126,7 @@ public class MainFloatWindow extends LinearLayout {
                 startTime = System.currentTimeMillis();
                 mTouchStartX = event.getX();
                 mTouchStartY = event.getY();
-                if(isHide){
-                    handler.sendEmptyMessage(MSG_WINDOW_SHOW);
-                }
+
                 canHide = false;
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -141,7 +142,9 @@ public class MainFloatWindow extends LinearLayout {
                     mWindowManager.updateViewLayout(this, mParams);
                     location[0] = mParams.x;
                     location[1] = mParams.y;
-                    isHide = false;
+                    if(isHide){
+                        handler.sendEmptyMessage(MSG_WINDOW_SHOW);
+                    }
                     canHide = false;
                     return false;
                 }
@@ -185,15 +188,11 @@ public class MainFloatWindow extends LinearLayout {
         if (isClick) {
             if (isHide){
                 handler.sendEmptyMessage(MSG_WINDOW_SHOW);
+                canHide = true;
             }else{
-                //启动悬浮窗子菜单
+                //启动切换账号窗口
                 canHide = false;
-                if(isOnLeft){
-                    popupRight.setVisibility(VISIBLE);
-                }else {
-                    popupLeft.setVisibility(VISIBLE );
-                }
-                showPopupWindow();
+                showSwitchWindow();
             }
             isClick = false;
         }else {
@@ -284,68 +283,16 @@ public class MainFloatWindow extends LinearLayout {
         }
     }
 
-
-
-    private void showPopupWindow(){
-        View view = LayoutInflater.from(context).inflate(MResource.getIdByName(context,"layout","popup_window"),null);
-        LinearLayout chargeLayout = (LinearLayout)view.findViewById(MResource.getIdByName(context,"id","layout_charge"));
-        LinearLayout switchLayout = (LinearLayout)view.findViewById(MResource.getIdByName(context,"id","layout_switch"));
-        LinearLayout backLayout = (LinearLayout)view.findViewById(MResource.getIdByName(context,"id","layout_back"));
-        final PopupWindow popupWindow = new PopupWindow(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setContentView(view);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setClippingEnabled(true);
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+    private void showSwitchWindow() {
+        SwitchDialog switchDialog = new SwitchDialog(context);
+        switchDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        switchDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
-            public void onDismiss() {
-                if(isOnLeft){
-                    popupRight.setVisibility(GONE);
-                }else {
-                    popupLeft.setVisibility(GONE);
-                }
+            public void onCancel(DialogInterface dialogInterface) {
                 canHide = true;
                 waitToHideWindow();
             }
         });
-        if (isOnLeft){
-            popupWindow.showAtLocation(this,Gravity.START,ivDefault.getWidth(),0);
-        }else {
-            popupWindow.showAtLocation(this,Gravity.END,ivDefault.getWidth(),0);
-        }
-
-        chargeLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ChargeDialog chargeDialog = new ChargeDialog(context);
-                chargeDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                chargeDialog.show();
-            }
-        });
-
-        switchLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SwitchDialog switchDialog = new SwitchDialog(context,popupWindow);
-                switchDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                switchDialog.show();
-            }
-        });
-
-        backLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupWindow.dismiss();
-                if(isOnLeft){
-                    popupRight.setVisibility(GONE);
-                }else {
-                    popupLeft.setVisibility(GONE);
-                }
-                canHide = true;
-                waitToHideWindow();
-                MainFloatWindow.this.setClickable(true);
-            }
-        });
-
+        switchDialog.show();
     }
 }

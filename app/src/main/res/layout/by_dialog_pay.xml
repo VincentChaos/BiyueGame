@@ -2,20 +2,20 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_dialog">
+    android:background="@drawable/by_bg_dialog">
 
     <WebView
-        android:id="@+id/web_view"
+        android:id="@+id/by_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
 
     <TextView
-        android:id="@+id/btn_close"
+        android:id="@+id/by_btn_close"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_gravity="end"
-        android:layout_margin="@dimen/spacing_smallest"
-        android:background="@drawable/icon_close"/>
+        android:layout_margin="@dimen/by_spacing_smallest"
+        android:background="@drawable/by_icon_close"/>
 
 </FrameLayout>

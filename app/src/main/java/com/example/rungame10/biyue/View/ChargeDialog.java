@@ -22,7 +22,7 @@ public class ChargeDialog extends AlertDialog {
     private TextView payBtn;
 
     public ChargeDialog(Context context){
-        super(context, MResource.getIdByName(context, "style", "Dialog"));
+        super(context, MResource.getIdByName(context, "style", "by_Dialog"));
         this.context = context;
     }
 
@@ -35,12 +35,12 @@ public class ChargeDialog extends AlertDialog {
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(MResource.getIdByName(context,"layout","dialog_charge"),null);
+        View view = inflater.inflate(MResource.getIdByName(context,"layout","by_dialog_charge"),null);
         setContentView(view);
 
         //声明
-        moneyEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","edit_money"));
-        payBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_pay"));
+        moneyEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","by_edit_money"));
+        payBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_btn_pay"));
 
         InputFilter[] filters = {new CashierInputFilter()};
         moneyEdit.setFilters(filters);

@@ -22,7 +22,7 @@ public class ProgressDialog extends AlertDialog{
     private Context context;
 
     public ProgressDialog(Context context) {
-        super(context, MResource.getIdByName(context,"style","progressbar"));
+        super(context, MResource.getIdByName(context,"style","by_progressbar"));
         this.context = context;
     }
 
@@ -44,13 +44,13 @@ public class ProgressDialog extends AlertDialog{
         lp.width = (int) (d.widthPixels);
         lp.height = (int) (d.heightPixels);
         dialogWindow.setAttributes(lp);
-        setTime();
+
     }
 
     private void init(){
-        View view = LayoutInflater.from(context).inflate(MResource.getIdByName(context,"layout","progressbar"),null);
+        View view = LayoutInflater.from(context).inflate(MResource.getIdByName(context,"layout","by_progressbar"),null);
 
-        ImageView circleView = (ImageView)view.findViewById(MResource.getIdByName(context,"id","progressbar"));
+        ImageView circleView = (ImageView)view.findViewById(MResource.getIdByName(context,"id","by_progressbar"));
         //加载动画
         Animation animation = AnimationUtils.loadAnimation(context,MResource.getIdByName(context,"anim","anim_load"));
         circleView.startAnimation(animation);

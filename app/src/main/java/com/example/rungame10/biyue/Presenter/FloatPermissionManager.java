@@ -3,6 +3,7 @@
  */
 package com.example.rungame10.biyue.Presenter;
 
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -16,8 +17,10 @@ import android.util.Log;
 import com.example.rungame10.biyue.Model.ROM.HuaweiUtils;
 import com.example.rungame10.biyue.Model.ROM.MeizuUtils;
 import com.example.rungame10.biyue.Model.ROM.MiuiUtils;
+import com.example.rungame10.biyue.Model.ROM.OppoUtils;
 import com.example.rungame10.biyue.Model.ROM.QikuUtils;
 import com.example.rungame10.biyue.Model.ROM.RomUtils;
+import com.example.rungame10.biyue.Util.MResource;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -45,12 +48,11 @@ public class FloatPermissionManager {
         return instance;
     }
 
-    public boolean applyFloatWindow(Context context) {
+    public void applyFloatWindow(Context context) {
         if (checkPermission(context)) {
-            return true;
+            return;
         } else {
             applyPermission(context);
-            return false;
         }
     }
 
@@ -65,6 +67,8 @@ public class FloatPermissionManager {
                 return huaweiPermissionCheck(context);
             } else if (RomUtils.checkIs360Rom()) {
                 return qikuPermissionCheck(context);
+            } else if (RomUtils.checkIsOppoRom()) {
+                return oppoROMPermissionCheck(context);
             }
         }
         return commonROMPermissionCheck(context);
@@ -84,6 +88,10 @@ public class FloatPermissionManager {
 
     private boolean qikuPermissionCheck(Context context) {
         return QikuUtils.checkFloatWindowPermission(context);
+    }
+
+    private boolean oppoROMPermissionCheck(Context context) {
+        return OppoUtils.checkFloatWindowPermission(context);
     }
 
     private boolean commonROMPermissionCheck(Context context) {
@@ -115,9 +123,12 @@ public class FloatPermissionManager {
                 huaweiROMPermissionApply(context);
             } else if (RomUtils.checkIs360Rom()) {
                 ROM360PermissionApply(context);
+            } else if (RomUtils.checkIsOppoRom()) {
+                oppoROMPermissionApply(context);
             }
+        } else {
+            commonROMPermissionApply(context);
         }
-        commonROMPermissionApply(context);
     }
 
     private void ROM360PermissionApply(final Context context) {
@@ -172,6 +183,19 @@ public class FloatPermissionManager {
         });
     }
 
+    private void oppoROMPermissionApply(final Context context) {
+        showConfirmDialog(context, new OnConfirmResult() {
+            @Override
+            public void confirmResult(boolean confirm) {
+                if (confirm) {
+                    OppoUtils.applyOppoPermission(context);
+                } else {
+                    Log.e(TAG, "ROM:miui, user manually refuse OVERLAY_PERMISSION");
+                }
+            }
+        });
+    }
+
     /**
      * 通用 rom 权限申请
      */
@@ -186,13 +210,7 @@ public class FloatPermissionManager {
                     public void confirmResult(boolean confirm) {
                         if (confirm) {
                             try {
-                                Class clazz = Settings.class;
-                                Field field = clazz.getDeclaredField("ACTION_MANAGE_OVERLAY_PERMISSION");
-
-                                Intent intent = new Intent(field.get(null).toString());
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.setData(Uri.parse("package:" + context.getPackageName()));
-                                context.startActivity(intent);
+                                commonROMPermissionApplyInternal(context);
                             } catch (Exception e) {
                                 Log.e(TAG, Log.getStackTraceString(e));
                             }
@@ -206,6 +224,16 @@ public class FloatPermissionManager {
         }
     }
 
+    public static void commonROMPermissionApplyInternal(Context context) throws NoSuchFieldException, IllegalAccessException {
+        Class clazz = Settings.class;
+        Field field = clazz.getDeclaredField("ACTION_MANAGE_OVERLAY_PERMISSION");
+
+        Intent intent = new Intent(field.get(null).toString());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setData(Uri.parse("package:" + context.getPackageName()));
+        context.startActivity(intent);
+    }
+
     private void showConfirmDialog(Context context, OnConfirmResult result) {
         showConfirmDialog(context, "您的手机没有授予悬浮窗权限，请开启后再试", result);
     }
@@ -214,7 +242,6 @@ public class FloatPermissionManager {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-
         dialog = new AlertDialog.Builder(context).setCancelable(true).setTitle("")
                 .setMessage(message)
                 .setPositiveButton("现在去开启",

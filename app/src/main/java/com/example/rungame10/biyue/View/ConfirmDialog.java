@@ -30,7 +30,7 @@ public class ConfirmDialog extends AlertDialog{
     private ConfirmPresenter confirmPresenter;
 
     public ConfirmDialog(@Nullable Context context) {
-        super(context, MResource.getIdByName(context,"style","Dialog"));
+        super(context, MResource.getIdByName(context,"style","by_Dialog"));
         this.context = context;
 
     }
@@ -47,14 +47,16 @@ public class ConfirmDialog extends AlertDialog{
             if (reference == null) { // the referenced object has been cleared
                 return;
             }
-            NotifyDialog notifyDialog = new NotifyDialog(context);
+
             // do something
             switch (msg.what){
                 case 0:
-                    notifyDialog.showNotifyDialog((String) msg.obj);
+                    NotifyDialog notifyDialog = new NotifyDialog(context,(String) msg.obj);
+                    notifyDialog.show();
                     break;
                 case 1:
-                    notifyDialog.showNotifyDialog((String) msg.obj,2);
+                    NotifyDialog notifyDialog2 = new NotifyDialog(context,(String) msg.obj,2);
+                    notifyDialog2.show();
                     break;
             }
         }
@@ -69,14 +71,14 @@ public class ConfirmDialog extends AlertDialog{
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(MResource.getIdByName(context, "layout", "dialog_confirm"),null);
+        View view = inflater.inflate(MResource.getIdByName(context, "layout", "by_dialog_confirm"),null);
         setContentView(view);
 
         //声明
-        pwdEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","edit_pwd"));
-        confirmEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","edit_confirm"));
-        finishBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_finish"));
-        returnBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_return"));
+        pwdEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","by_edit_pwd"));
+        confirmEdit = (EditText)view.findViewById(MResource.getIdByName(context,"id","by_edit_confirm"));
+        finishBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_btn_finish"));
+        returnBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_btn_return"));
 
         //点击事件
         finishBtn.setOnClickListener(new View.OnClickListener() {

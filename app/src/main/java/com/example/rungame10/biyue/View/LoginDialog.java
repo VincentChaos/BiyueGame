@@ -35,7 +35,7 @@ public class LoginDialog extends AlertDialog {
     private boolean otherFlag = false;
 
     public LoginDialog(@NonNull Context context) {
-        super(context, MResource.getIdByName(context, "style", "Dialog"));
+        super(context, MResource.getIdByName(context, "style", "by_Dialog"));
         this.context = context;
     }
 
@@ -53,14 +53,14 @@ public class LoginDialog extends AlertDialog {
                 return;
             }
             // do something
-            NotifyDialog notifyDialog = new NotifyDialog(context);
-
             switch (msg.what){
                 case 0:
-                    notifyDialog.showNotifyDialog((String) msg.obj);
+                    NotifyDialog notifyDialog = new NotifyDialog(context,(String) msg.obj);
+                    notifyDialog.show();
                     break;
                 case 1:
-                    notifyDialog.showNotifyDialog((String) msg.obj , 1);
+                    NotifyDialog notifyDialog2 = new NotifyDialog(context,(String) msg.obj,1);
+                    notifyDialog2.show();
                     break;
             }
         }
@@ -75,19 +75,19 @@ public class LoginDialog extends AlertDialog {
 
      private void init(){
          LayoutInflater inflater = LayoutInflater.from(context);
-         View view = inflater.inflate(MResource.getIdByName(context, "layout", "dialog_login"),null);
+         View view = inflater.inflate(MResource.getIdByName(context, "layout", "by_dialog_login"),null);
          setContentView(view);
 
          //声明
-         accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_account"));
-         pwdEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "edit_pwd"));
-         loginBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_login"));
-         registerBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_register"));
-         esayLogin = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_login_one"));
-         forgetPwd = (TextView)view.findViewById(MResource.getIdByName(context, "id", "btn_forget"));
-         wechatLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "btn_wechat"));
-         qqLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "btn_qq"));
-         ll = (LinearLayout)view.findViewById(MResource.getIdByName(context,"id","ll"));
+         accountEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "by_edit_account"));
+         pwdEdit = (EditText)view.findViewById(MResource.getIdByName(context, "id", "by_edit_pwd"));
+         loginBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "by_btn_login"));
+         registerBtn = (TextView)view.findViewById(MResource.getIdByName(context, "id", "by_btn_register"));
+         esayLogin = (TextView)view.findViewById(MResource.getIdByName(context, "id", "by_btn_login_one"));
+         forgetPwd = (TextView)view.findViewById(MResource.getIdByName(context, "id", "by_btn_forget"));
+         wechatLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "by_btn_wechat"));
+         qqLogin = (ImageView)view.findViewById(MResource.getIdByName(context, "id", "by_btn_qq"));
+         ll = (LinearLayout)view.findViewById(MResource.getIdByName(context,"id","by_ll"));
          loginPresenter = new LoginPresenter(context,LoginDialog.this);
          loginPresenter.setAccount(accountEdit,pwdEdit);
 
@@ -134,7 +134,7 @@ public class LoginDialog extends AlertDialog {
              @Override
              public void onClick(View view) {
                  //微信登录按钮操作
-                 loginPresenter.wechatLogin();
+//                 loginPresenter.wechatLogin();
              }
          });
          qqLogin.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +176,6 @@ public class LoginDialog extends AlertDialog {
         Message msg = loginHandler.obtainMessage();
         msg.what = 1;
         msg.obj = returnWord;
-
         loginHandler.sendMessage(msg);
         //登录成功退出登录窗口
         LoginDialog.this.cancel();

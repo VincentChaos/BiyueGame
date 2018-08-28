@@ -289,7 +289,7 @@ public class UIUtils {
                     view.setLayoutParams(params);
 
                 }
-                view.setBackgroundColor(getColor(R.color.main_color));
+                view.setBackgroundColor(getColor(R.color.by_main_color));
             } else {
                 view.setVisibility(View.GONE);
             }

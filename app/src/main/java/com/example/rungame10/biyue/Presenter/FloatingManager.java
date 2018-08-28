@@ -25,12 +25,10 @@ public class FloatingManager {
     private static WindowManager.LayoutParams mParams;
     private static boolean hasShown;
 
-
     /**
      * 创建一个小悬浮窗。初始位置为屏幕的右部中间位置。
      */
     public static void createFloatWindow(Context context) {
-        Log.e("create","floatWin");
         mParams = new WindowManager.LayoutParams();
         WindowManager windowManager = getWindowManager(context);
         mainFloatWindow = new MainFloatWindow(context);
@@ -66,7 +64,6 @@ public class FloatingManager {
             mParams.x = 0;
             mParams.y = (int)screenHeight / 2;
         }else {
-            Log.e("save",Config.saveX+"  "+Config.saveY);
             mParams.x = Config.saveX;
             mParams.y = Config.saveY;
         }

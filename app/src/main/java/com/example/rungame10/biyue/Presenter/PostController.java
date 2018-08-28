@@ -31,14 +31,13 @@ public class PostController {
 
         //创建一个OkHttpClient对象
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(2000, TimeUnit.MILLISECONDS)
-                .readTimeout(2000, TimeUnit.MILLISECONDS)
+                .connectTimeout(1000, TimeUnit.MILLISECONDS)
+                .readTimeout(1000, TimeUnit.MILLISECONDS)
                 .build();
 
         //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
         Gson g = new Gson();
         String json = g.toJson(object);
-        Log.e("createJson",json);
         //json为String类型的json数据
         RequestBody requestBody = RequestBody.create(JSON, json);
 

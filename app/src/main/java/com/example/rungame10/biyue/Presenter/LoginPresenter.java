@@ -51,19 +51,6 @@ public class LoginPresenter {
         loginDialog.cancel();
     }
 
-    public void wechatLogin(){
-        //发起微信登录请求
-        if(Config.wx_api.isWXAppInstalled()){
-            SendAuth.Req req = new SendAuth.Req();
-            req.scope = "snsapi_userinfo";
-            req.state = "wechat_sdk_login";
-            Config.wx_api.sendReq(req);
-        }else {
-            Toast.makeText(context,"你还没有安装微信",Toast.LENGTH_SHORT).show();
-        }
-        loginDialog.cancel();
-    }
-
     public void normalLogin(EditText accountEdit, EditText pwdEdit){
 
         //登录按钮操作
@@ -101,18 +88,15 @@ public class LoginPresenter {
 
                         //获取其中code
                         code = response.getCode();
-                        Log.e("code:",code+"");
                         if (code == 10001){
                             //登录成功
-
+                            FloatActionController.isLogined = true;
                             //因Gson解析时将msg类转换成键值对，则用TreeMap获取
                             LinkedTreeMap linkedTreeMap = (LinkedTreeMap)response.getMsg();
 
                             //新建回复实体类，获取TreeMap中的值
                             ResponseMsg getResponse = new ResponseMsg(linkedTreeMap);
-                            Log.e("getResponse：","openid:"+getResponse.getOpenid()+"username:"+getResponse.getUsername()+"register:"+getResponse.getRegister()+"havephone:"+getResponse.getHavePhone());
                             returnWord = "登录成功，用户名为："+getResponse.getUsername();
-
                             //保存用户名密码至SharedPreferences
                             SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -225,16 +209,14 @@ public class LoginPresenter {
 
                     //获取其中code
                     code = response.getCode();
-                    Log.e("code:",code+"");
                     if (code == 10001){
                         //登录成功
-
+                        FloatActionController.isLogined = true;
                         //因Gson解析时将msg类转换成键值对，则用TreeMap获取
                         LinkedTreeMap linkedTreeMap = (LinkedTreeMap)response.getMsg();
 
                         //新建回复实体类，获取TreeMap中的值
                         ResponseMsg getResponse = new ResponseMsg(linkedTreeMap);
-                        Log.e("getResponse：","openid:"+getResponse.getOpenid()+"username:"+getResponse.getUsername()+"register:"+getResponse.getRegister()+"havephone:"+getResponse.getHavePhone());
                         returnWord = "登录成功，用户名为："+getResponse.getUsername();
 
                         //保存用户名密码至SharedPreferences

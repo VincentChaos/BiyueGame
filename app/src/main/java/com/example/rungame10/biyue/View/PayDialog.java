@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -35,7 +35,7 @@ public class PayDialog extends AlertDialog{
     private String ext;
 
     public PayDialog(@Nullable Context context,String uid,double money,@Nullable String ext){
-        super(context, MResource.getIdByName(context,"style","Dialog"));
+        super(context, MResource.getIdByName(context,"style","by_Dialog"));
         this.context = context;
         this.uid = uid;
         this.money = money;
@@ -51,12 +51,12 @@ public class PayDialog extends AlertDialog{
 
     private void init(){
         final LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(MResource.getIdByName(context,"layout","dialog_pay"),null);
+        View view = inflater.inflate(MResource.getIdByName(context,"layout","by_dialog_pay"),null);
         setContentView(view);
 
         //声明
-        webView = (WebView)view.findViewById(MResource.getIdByName(context,"id","web_view"));
-        closeBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","btn_close"));
+        webView = (WebView)view.findViewById(MResource.getIdByName(context,"id","by_web_view"));
+        closeBtn = (TextView)view.findViewById(MResource.getIdByName(context,"id","by_btn_close"));
 
         webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -67,6 +67,21 @@ public class PayDialog extends AlertDialog{
 
         webView.setHorizontalScrollBarEnabled(false);//水平不显示
         webView.setVerticalScrollBarEnabled(false); //垂直不显示
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.show();
+        webView.setWebChromeClient(new WebChromeClient(){
+            //获取加载进度
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+
+                if (newProgress < 100) {
+
+                } else if (newProgress == 100) {
+                    progressDialog.dismiss();
+                }
+            }
+        });
+
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -76,6 +91,7 @@ public class PayDialog extends AlertDialog{
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
                     context.startActivity(intent);
+                    cancel();
                     return true;
                 }
 
@@ -141,7 +157,7 @@ public class PayDialog extends AlertDialog{
             context.startActivity(intent);
             cancel();
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 

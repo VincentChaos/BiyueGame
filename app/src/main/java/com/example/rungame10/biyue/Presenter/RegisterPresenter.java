@@ -73,7 +73,6 @@ public class RegisterPresenter {
 
                         //获取其中code
                         int code = response.getCode();
-                        Log.e("code:",code+"");
                         if (code == 10001){
                             focusFlag = true;
                         }
@@ -136,14 +135,12 @@ public class RegisterPresenter {
 
                             //获取其中code
                             int code = response.getCode();
-                            Log.e("code:",code+"");
 
                             String returnWord;
                             if (code == 10001){
                                 //注册成功
                                 LinkedTreeMap linkedTreeMap = (LinkedTreeMap)response.getMsg();
                                 ResponseMsg getResponse = new ResponseMsg(linkedTreeMap);
-                                Log.e("getResponse：","openid:"+getResponse.getOpenid()+"username:"+getResponse.getUsername()+"register:"+getResponse.getRegister()+"");
                                 returnWord = "注册成功，点击确定进行登录操作";
 
                                 //code为成功返回时,保存用户名密码至SharedPreferences
