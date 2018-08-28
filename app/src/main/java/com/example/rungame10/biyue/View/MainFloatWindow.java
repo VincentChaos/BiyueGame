@@ -109,7 +109,7 @@ public class MainFloatWindow extends LinearLayout {
                 isOnLeft = false;
             }
             waitToHideWindow();
-            location[0] = (int)MainFloatWindow.this.getY();;
+            location[0] = (int)MainFloatWindow.this.getX();
             location[1] = (int)MainFloatWindow.this.getY();
         }
     }
