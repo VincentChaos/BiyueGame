@@ -1,13 +1,14 @@
 package com.example.rungame10.biyue.View;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +17,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.rungame10.biyue.Common.Config;
+import com.example.rungame10.biyue.Intf.ResultCode;
 import com.example.rungame10.biyue.Util.MResource;
 import com.example.rungame10.biyue.Presenter.LoginPresenter;
 
@@ -23,12 +27,13 @@ import java.lang.ref.WeakReference;
 
 public class LoginDialog extends AlertDialog {
 
+    @SuppressLint("StaticFieldLeak")
     private static Context context;
     private EditText accountEdit,pwdEdit;       //账号编辑框，密码编辑框
     private TextView loginBtn,registerBtn,esayLogin,forgetPwd;        //登录按钮，注册按钮，一键登录按钮，忘记密码按钮
     private ImageView wechatLogin,qqLogin;      //微信登录按钮，qq登录按钮
     private LinearLayout ll;                    //含微信、QQ登录layout
-    public LoginHandler loginHandler = new LoginHandler(this);
+    private LoginHandler loginHandler = new LoginHandler(this);
 
     public LoginPresenter loginPresenter;
 
@@ -39,7 +44,8 @@ public class LoginDialog extends AlertDialog {
         this.context = context;
     }
 
-    private static class LoginHandler extends Handler{
+    @SuppressLint("HandlerLeak")
+    private class LoginHandler extends Handler{
         private WeakReference<LoginDialog> mWeakReference;
 
         public LoginHandler(LoginDialog reference) {
@@ -55,19 +61,20 @@ public class LoginDialog extends AlertDialog {
             // do something
             switch (msg.what){
                 case 0:
+                    Config.loginCallBack.onResponse(ResultCode.LOGIN_FAIL);
                     NotifyDialog notifyDialog = new NotifyDialog(context,(String) msg.obj);
                     notifyDialog.show();
                     break;
                 case 1:
-                    NotifyDialog notifyDialog2 = new NotifyDialog(context,(String) msg.obj,1);
-                    notifyDialog2.show();
+                    NotifyLoginDialog notifyLoginDialog = new NotifyLoginDialog(context,(String)msg.obj);
+                    notifyLoginDialog.show();
                     break;
             }
         }
     }
 
     @Override
-     protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
          // TODO Auto-generated method stub
          super.onCreate(savedInstanceState);
          init();
@@ -144,15 +151,32 @@ public class LoginDialog extends AlertDialog {
              }
          });
 
+
          //设置宽高
          Window dialogWindow = getWindow();
          WindowManager.LayoutParams lp = dialogWindow.getAttributes();
          DisplayMetrics d = context.getResources().getDisplayMetrics();     //获取屏幕宽高
-         lp.width = (int) (d.widthPixels*0.8);
-         if(otherFlag){
-             lp.height = (int) (d.heightPixels*0.5);
-         }else {
-             lp.height = (int) (d.heightPixels*0.45);
+
+         //判断当前是否横屏
+         Configuration configuration = context.getResources().getConfiguration();
+         int ori = configuration.orientation;
+         if(ori == Configuration.ORIENTATION_LANDSCAPE){
+             //横屏
+             lp.width = (int) (d.widthPixels*0.5);
+             if(otherFlag){
+                 lp.height = (int) (d.heightPixels*0.9);
+             }else {
+                 lp.height = (int) (d.heightPixels*0.85);
+             }
+
+         }else if(ori == Configuration.ORIENTATION_PORTRAIT){
+             //竖屏
+             lp.width = (int) (d.widthPixels*0.8);
+             if(otherFlag){
+                 lp.height = (int) (d.heightPixels*0.5);
+             }else {
+                 lp.height = (int) (d.heightPixels*0.45);
+             }
          }
          dialogWindow.setAttributes(lp);
 
@@ -171,7 +195,7 @@ public class LoginDialog extends AlertDialog {
          loginHandler.sendMessage(msg);
      }
 
-    public void showNotifyDialog(String returnWord,int flag){
+     public void showNotifyDialog(String returnWord,int flag){
         //开启提示弹出窗口
         Message msg = loginHandler.obtainMessage();
         msg.what = 1;
@@ -180,5 +204,6 @@ public class LoginDialog extends AlertDialog {
         //登录成功退出登录窗口
         LoginDialog.this.cancel();
     }
+
 
 }

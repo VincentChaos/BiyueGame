@@ -1,4 +1,4 @@
-package com.example.rungame10.biyue.Intf;
+package com.example.rungame10.biyue.Model;
 
 public class JsonResult {
     private int code;       //返回状态码

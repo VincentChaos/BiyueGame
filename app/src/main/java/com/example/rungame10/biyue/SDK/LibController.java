@@ -5,13 +5,14 @@ import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
 import com.example.rungame10.biyue.Common.Config;
-import com.example.rungame10.biyue.Presenter.FloatActionController;
-import com.example.rungame10.biyue.Presenter.FloatPermissionManager;
+import com.example.rungame10.biyue.Intf.LoginCallBack;
+import com.example.rungame10.biyue.Intf.LogoutCallBack;
+import com.example.rungame10.biyue.Intf.InitCallBack;
+import com.example.rungame10.biyue.Intf.ResultCode;
 import com.example.rungame10.biyue.Presenter.LoginPresenter;
 import com.example.rungame10.biyue.View.LoginDialog;
 import com.example.rungame10.biyue.View.NotifyDialog;
 import com.example.rungame10.biyue.View.PayDialog;
-import com.example.rungame10.biyue.View.SwitchDialog;
 
 public class LibController {
 
@@ -21,7 +22,22 @@ public class LibController {
         this.context = context;
     }
 
-    public void doLogin(){
+    public static LibController getInstance(Context context){
+        return new LibController(context);
+    }
+
+    public void init(String appId,String pId,String key,InitCallBack initCallBack){
+        Config.APP_ID = appId;
+        Config.P_ID = pId;
+        Config.KEY = key;
+        if (Config.APP_ID.equals("")||Config.P_ID.equals("")||Config.KEY.equals("")){
+            initCallBack.onResponse(ResultCode.INIT_FAIL);
+        }else {
+            initCallBack.onResponse(ResultCode.INIT_SUCCESS);
+        }
+    }
+
+    public void doLogin(LoginCallBack loginCallBack){
         if(Config.APP_ID.equals("")||Config.P_ID.equals("")){
             NotifyDialog notifyDialog = new NotifyDialog(context,"未初始化配置");
             notifyDialog.show();
@@ -31,6 +47,8 @@ public class LibController {
                 notifyDialog.show();
             }else {
                 //登录操作
+                Config.loginCallBack = loginCallBack;
+
                 SharedPreferences sharedPreferences = context.getSharedPreferences("user_info", Context.MODE_PRIVATE);
                 if (sharedPreferences.contains("account") && sharedPreferences.contains("password")) {
                     LoginDialog loginDialog = new LoginDialog(context);
@@ -43,21 +61,16 @@ public class LibController {
             }
         }
 
+
     }
 
     public boolean checkLogined(){
-        return FloatActionController.isLogined;
+        return Config.isLogined;
     }
 
-    public void init(String appId,String pId,String key){
-        Config.APP_ID = appId;
-        Config.P_ID = pId;
-        Config.KEY = key;
-        FloatPermissionManager.getInstance().applyFloatWindow(context);
-    }
 
     public void doPay (double money, @Nullable String ext){
-        if(FloatActionController.isLogined){
+        if(Config.isLogined){
             if (!Config.KEY.equals("")){
                 SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
                 if(sharedPreferences.contains("openid")){
@@ -75,14 +88,7 @@ public class LibController {
         }
     }
 
-    public void doLogout(){
-        if(FloatActionController.isLogined){
-            SwitchDialog switchDialog = new SwitchDialog(context);
-            switchDialog.show();
-        }else {
-            NotifyDialog notifyDialog = new NotifyDialog(context,"用户未登录，请登录");
-            notifyDialog.show();
-        }
+    public void doLogout(LogoutCallBack logoutCallBack){
+        Config.logoutCallBack = logoutCallBack;
     }
-
 }

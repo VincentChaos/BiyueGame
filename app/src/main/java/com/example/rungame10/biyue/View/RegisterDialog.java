@@ -2,6 +2,7 @@ package com.example.rungame10.biyue.View;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -134,8 +135,21 @@ public class RegisterDialog extends AlertDialog {
         Window dialogWindow = getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         DisplayMetrics d = context.getResources().getDisplayMetrics();     //获取屏幕宽高
-        lp.width = (int) (d.widthPixels*0.8);
-        lp.height = (int) (d.heightPixels*0.5);
+
+        //判断当前是否横屏
+        Configuration configuration = context.getResources().getConfiguration();
+        int ori = configuration.orientation;
+        if(ori == Configuration.ORIENTATION_LANDSCAPE){
+            //横屏
+            lp.width = (int) (d.widthPixels*0.5);
+            lp.height = (int) (d.heightPixels*0.9);
+
+        }else if(ori == Configuration.ORIENTATION_PORTRAIT){
+            //竖屏
+            lp.width = (int) (d.widthPixels*0.8);
+            lp.height = (int) (d.heightPixels*0.5);
+        }
+
         dialogWindow.setAttributes(lp);
 
         //显示alertDialog的软键盘

@@ -1,4 +1,4 @@
-package com.example.rungame10.biyue.Util;
+package com.example.rungame10.biyue.Intf;
 
 public interface HttpCallBackListener {
 

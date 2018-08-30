@@ -2,12 +2,11 @@ package com.example.rungame10.biyue.Presenter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.example.rungame10.biyue.Common.Config;
 import com.example.rungame10.biyue.Model.RequestLoginAndRegister;
-import com.example.rungame10.biyue.Intf.JsonResult;
+import com.example.rungame10.biyue.Model.JsonResult;
 import com.example.rungame10.biyue.Model.RequestOneKey;
 import com.example.rungame10.biyue.Model.ResponseMsg;
 import com.example.rungame10.biyue.View.LoginDialog;
@@ -16,7 +15,6 @@ import com.example.rungame10.biyue.View.RegisterDialog;
 import com.example.rungame10.biyue.View.VerifyDialog;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 public class LoginPresenter {
 
@@ -90,7 +88,8 @@ public class LoginPresenter {
                         code = response.getCode();
                         if (code == 10001){
                             //登录成功
-                            FloatActionController.isLogined = true;
+                            Config.isLogined = true;
+
                             //因Gson解析时将msg类转换成键值对，则用TreeMap获取
                             LinkedTreeMap linkedTreeMap = (LinkedTreeMap)response.getMsg();
 
@@ -161,6 +160,7 @@ public class LoginPresenter {
                         editor.putString("openid",getResponse.getOpenid());
                         editor.apply();
 
+
                         loginDialog.showNotifyDialog(returnWord,2);
                     }else {
                         loginDialog.showNotifyDialog((String )response.getMsg());
@@ -211,7 +211,7 @@ public class LoginPresenter {
                     code = response.getCode();
                     if (code == 10001){
                         //登录成功
-                        FloatActionController.isLogined = true;
+                        Config.isLogined = true;
                         //因Gson解析时将msg类转换成键值对，则用TreeMap获取
                         LinkedTreeMap linkedTreeMap = (LinkedTreeMap)response.getMsg();
 
@@ -232,6 +232,7 @@ public class LoginPresenter {
                         //调用弹出通知窗口方法
                         loginDialog.showNotifyDialog(returnWord,1);
                     }else {
+
                         //调用弹出通知登录失败
                         loginDialog.showNotifyDialog((String) response.getMsg());
                     }

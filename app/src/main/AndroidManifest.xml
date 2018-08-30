@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.rungame10.biyue">
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -13,32 +12,6 @@
         android:allowBackup="true"
         android:supportsRtl="true">
 
-        <!-- android:name=".Application.BiYueApplication" -->
-        <!-- android:icon="@mipmap/ic_launcher" -->
-        <!-- android:label="@string/by_app_name" -->
-        <!-- android:roundIcon="@mipmap/ic_launcher_round" -->
-        <!-- android:theme="@style/AppTheme"> -->
-
-
-        <!-- <activity android:name=".MainActivity"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <!-- <activity -->
-        <!-- android:name=".wxapi.WXPayEntryActivity" -->
-        <!-- android:exported="true" -->
-        <!-- android:label="@string/by_app_name" /> -->
-        <!-- <activity -->
-        <!-- android:name=".wxapi.WXEntryActivity" -->
-        <!-- android:exported="true" -->
-        <!-- android:label="@string/by_app_name" -->
-        <!-- android:launchMode="singleTop" /> -->
-
-        <service android:name=".Service.FloatService" />
 
         <activity android:name=".View.TestActivity"></activity>
     </application>

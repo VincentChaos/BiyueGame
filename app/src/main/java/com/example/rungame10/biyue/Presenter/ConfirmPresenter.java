@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.rungame10.biyue.Intf.JsonResult;
+import com.example.rungame10.biyue.Model.JsonResult;
 import com.example.rungame10.biyue.Model.RequestReset;
 import com.example.rungame10.biyue.View.ConfirmDialog;
 import com.example.rungame10.biyue.View.ProgressDialog;

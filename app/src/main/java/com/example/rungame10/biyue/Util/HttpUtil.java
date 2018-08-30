@@ -1,5 +1,7 @@
 package com.example.rungame10.biyue.Util;
 
+import com.example.rungame10.biyue.Intf.HttpCallBackListener;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

@@ -28,9 +28,6 @@
 -dontpreverify
 
 #保留
--keep public class com.example.rungame10.biyue.Application.BiYueApplication
--keep public class com.example.rungame10.biyue.Service.FloatService
--keep public class com.example.rungame10.buyue.View.NotifyDialog
 -keep public class com.example.rungame10.biyue.SDK.** {*;}
 
 #保留native方法的类名和方法名

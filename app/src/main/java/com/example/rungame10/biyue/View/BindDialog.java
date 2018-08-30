@@ -2,6 +2,7 @@ package com.example.rungame10.biyue.View;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -57,8 +58,8 @@ public class BindDialog extends AlertDialog{
                     notifyDialog.show();
                     break;
                 case 1:
-                    NotifyDialog notifyDialog2 = new NotifyDialog(context,(String) msg.obj,msg.arg1);
-                    notifyDialog2.show();
+                    NotifyLoginDialog notifyLoginDialog = new NotifyLoginDialog(context,(String) msg.obj);
+                    notifyLoginDialog.show();
                     break;
             }
         }
@@ -136,6 +137,21 @@ public class BindDialog extends AlertDialog{
         DisplayMetrics d = context.getResources().getDisplayMetrics();     //获取屏幕宽高
         lp.width = (int) (d.widthPixels*0.8);
         lp.height = (int) (d.heightPixels*0.4);
+
+        //判断当前是否横屏
+        Configuration configuration = context.getResources().getConfiguration();
+        int ori = configuration.orientation;
+        if(ori == Configuration.ORIENTATION_LANDSCAPE){
+            //横屏
+            lp.width = (int) (d.widthPixels*0.5);
+            lp.height = (int) (d.heightPixels*0.8);
+
+        }else if(ori == Configuration.ORIENTATION_PORTRAIT){
+            //竖屏
+            lp.width = (int) (d.widthPixels*0.8);
+            lp.height = (int) (d.heightPixels*0.4);
+        }
+
         dialogWindow.setAttributes(lp);
 
         //显示alertDialog的软键盘

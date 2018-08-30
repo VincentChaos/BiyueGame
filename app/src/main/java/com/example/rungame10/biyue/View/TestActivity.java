@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.rungame10.biyue.Intf.LoginCallBack;
+import com.example.rungame10.biyue.Intf.LogoutCallBack;
+import com.example.rungame10.biyue.Intf.InitCallBack;
 import com.example.rungame10.biyue.SDK.LibController;
 import com.example.rungame10.biyue.Util.MResource;
 
@@ -20,21 +23,35 @@ public class TestActivity extends AppCompatActivity {
         test = (Button)this.findViewById(MResource.getIdByName(TestActivity.this,"id","by_test2"));
 
 
-        final LibController libController = new LibController(TestActivity.this);
-        libController.init("by1001","by_jymfyxy","rungame");
-        libController.doLogin();
+        LibController.getInstance(TestActivity.this).init("by1001", "by_jymfyxy", "rungame", new InitCallBack() {
+            @Override
+            public void onResponse(int resultCode) {
+
+            }
+        });
+        LibController.getInstance(TestActivity.this).doLogin(new LoginCallBack() {
+            @Override
+            public void onResponse(int resultCode) {
+
+            }
+        });
 
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                libController.doPay(0.01,null);
+                LibController.getInstance(TestActivity.this).doPay(0.01,null);
             }
         });
 
         test2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                libController.doLogout();
+                LibController.getInstance(TestActivity.this).doLogout(new LogoutCallBack() {
+                    @Override
+                    public void onResponse(int resultCode) {
+
+                    }
+                });
             }
         });
     }
