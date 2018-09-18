@@ -78,7 +78,7 @@ public class NotifyLoginDialog extends AlertDialog{
                     String getHavePhone = sharedPreferences.getString("have_phone","");
                     if(getHavePhone.equals("1.0")){
                         //已绑定手机
-                        Config.loginCallBack.onResponse(ResultCode.LOGIN_SUCCESS);
+                        Config.loginCallBack.onResponse(ResultCode.LOGIN_SUCCESS,sharedPreferences.getString("openid",""));
                     }else {
                         //未绑定手机，开启绑定手机界面绑定手机
                         Toast.makeText(context,"请绑定手机",Toast.LENGTH_SHORT).show();

@@ -31,10 +31,12 @@ public class TestActivity extends AppCompatActivity {
         });
         LibController.getInstance(TestActivity.this).doLogin(new LoginCallBack() {
             @Override
-            public void onResponse(int resultCode) {
+            public void onResponse(int resultCode, String openId) {
 
             }
         });
+
+        LibController.getInstance(TestActivity.this).getOpenId();
 
         test.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,16 +45,13 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-        test2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LibController.getInstance(TestActivity.this).doLogout(new LogoutCallBack() {
-                    @Override
-                    public void onResponse(int resultCode) {
 
-                    }
-                });
+        LibController.getInstance(TestActivity.this).logout(new LogoutCallBack() {
+            @Override
+            public void onResponse(int resultCode) {
+
             }
         });
+
     }
 }

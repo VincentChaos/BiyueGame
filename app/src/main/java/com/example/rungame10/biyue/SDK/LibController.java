@@ -9,6 +9,7 @@ import com.example.rungame10.biyue.Intf.LoginCallBack;
 import com.example.rungame10.biyue.Intf.LogoutCallBack;
 import com.example.rungame10.biyue.Intf.InitCallBack;
 import com.example.rungame10.biyue.Intf.ResultCode;
+import com.example.rungame10.biyue.Presenter.DES;
 import com.example.rungame10.biyue.Presenter.LoginPresenter;
 import com.example.rungame10.biyue.View.LoginDialog;
 import com.example.rungame10.biyue.View.NotifyDialog;
@@ -53,15 +54,29 @@ public class LibController {
                 if (sharedPreferences.contains("account") && sharedPreferences.contains("password")) {
                     LoginDialog loginDialog = new LoginDialog(context);
                     LoginPresenter loginPresenter = new LoginPresenter(context, loginDialog);
-                    loginPresenter.quickLogin(sharedPreferences.getString("account", ""), sharedPreferences.getString("password", ""));
+                    try {
+                        String pwdStr = DES.getDESOri(sharedPreferences.getString("password", ""),DES.KEY);
+                        loginPresenter.quickLogin(sharedPreferences.getString("account", ""),pwdStr);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     LoginDialog loginDialog = new LoginDialog(context);
                     loginDialog.show();
                 }
             }
         }
+    }
 
-
+    public String getOpenId(){
+        if (Config.isLogined){
+            SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
+            return sharedPreferences.getString("openid","");
+        }else {
+            NotifyDialog notifyDialog = new NotifyDialog(context,"用户未登录，请登录");
+            notifyDialog.show();
+            return "";
+        }
     }
 
     public boolean checkLogined(){
@@ -88,7 +103,8 @@ public class LibController {
         }
     }
 
-    public void doLogout(LogoutCallBack logoutCallBack){
+    public void logout(LogoutCallBack logoutCallBack){
         Config.logoutCallBack = logoutCallBack;
     }
+
 }

@@ -102,7 +102,12 @@ public class BindPresenter {
 
                 SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
                 String username = sharedPreferences.getString("account","");
-                String password = sharedPreferences.getString("password","");
+                String password = null;
+                try {
+                    password = DES.getDESOri(sharedPreferences.getString("password",""), DES.KEY);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 //打包验证验证码对象
                 final RequestLoginAndRegister request = new RequestLoginAndRegister();
@@ -160,7 +165,9 @@ public class BindPresenter {
     public void doSkip(){
         //跳过，登录成功
         Config.isLogined = true;
-        Config.loginCallBack.onResponse(ResultCode.LOGIN_SUCCESS);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
+        String openId = sharedPreferences.getString("openid","");
+        Config.loginCallBack.onResponse(ResultCode.LOGIN_SUCCESS,openId);
         bindDialog.cancel();
     }
 

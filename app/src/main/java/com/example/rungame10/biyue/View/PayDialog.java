@@ -2,14 +2,19 @@ package com.example.rungame10.biyue.View;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +23,25 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import com.example.rungame10.biyue.Model.JsonResult;
 import com.example.rungame10.biyue.Model.Pay;
 import com.example.rungame10.biyue.Util.MResource;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class PayDialog extends AlertDialog{
     private Context context;
@@ -97,29 +114,63 @@ public class PayDialog extends AlertDialog{
                 }
 
                 if (url.contains("platformapi/startApp")) {
+                    //识别支付宝支付
                     startAlipayActivity(url);
                 } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
                         && (url.contains("platformapi") && url.contains("startApp"))) {
                     startAlipayActivity(url);
                 }
 
+                if(url.contains("code")){
+
+                }
+
                 return super.shouldOverrideUrlLoading(view,url);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {//网页页面开始加载的时候
+                super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
             }
+
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                super.onReceivedHttpError(view, request, errorResponse);
+                //检测网页状态码，若为400即返回参数错误
+                Log.e("code:",errorResponse.getStatusCode()+"");
+                if (errorResponse.getStatusCode() == 400){
+                    NotifyDialog notifyDialog = new NotifyDialog(context,"初始化参数错误");
+                    notifyDialog.show();
+                    cancel();
+                }
+            }
+
             @Override
             public void onReceivedError(WebView view, int errorCode,
                                         String description, String failingUrl) {
                 // TODO Auto-generated method stub
                 super.onReceivedError(view, errorCode, description, failingUrl);
+                NotifyDialog notifyDialog = new NotifyDialog(context,description);
+                notifyDialog.show();
+                cancel();
             }
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 //super.onReceivedSslError(view, handler, error);
                 handler.proceed();
+            }
+        });
+
+        setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                progressDialog.dismiss();
             }
         });
 
@@ -174,6 +225,7 @@ public class PayDialog extends AlertDialog{
 
         }
     }
+
 
     //点击返回上一页面而不是退出浏览器
     @Override

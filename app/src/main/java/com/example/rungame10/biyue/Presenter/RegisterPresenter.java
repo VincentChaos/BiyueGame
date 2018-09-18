@@ -145,8 +145,12 @@ public class RegisterPresenter {
                                 //code为成功返回时,保存用户名密码至SharedPreferences
                                 SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("account",account);
-                                editor.putString("password",pwd);
+                                try {
+                                    editor.putString("account",account);
+                                    editor.putString("password",DES.getDES(pwd,DES.KEY));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 editor.apply();
 
                                 //调用弹出通知窗口方法
@@ -195,7 +199,7 @@ public class RegisterPresenter {
         if (s.equals("")){
             Toast.makeText(context,"用户密码不能为空",Toast.LENGTH_SHORT).show();
             return null;
-        }else if(s.length() <= 6){
+        }else if(s.length() < 6){
             Toast.makeText(context,"用户密码长度不能小于6位",Toast.LENGTH_SHORT).show();
             return null;
         }else if(s.length() > 15){

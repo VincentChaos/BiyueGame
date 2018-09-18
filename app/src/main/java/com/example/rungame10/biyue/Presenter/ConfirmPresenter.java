@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.rungame10.biyue.Common.Config;
 import com.example.rungame10.biyue.Model.JsonResult;
 import com.example.rungame10.biyue.Model.RequestReset;
 import com.example.rungame10.biyue.View.ConfirmDialog;
@@ -70,8 +71,12 @@ public class ConfirmPresenter {
                                 //保存账号密码
                                 SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("account",telephone);
-                                editor.putString("password",pwdStr);
+                                try {
+                                    editor.putString("password",DES.getDES(pwdStr, DES.KEY));
+                                    editor.putString("account",telephone);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 editor.apply();
 
                                 confirmDialog.showNotifyDialog((String) response.getMsg(),1);
@@ -103,7 +108,7 @@ public class ConfirmPresenter {
         if (s.equals("")){
             Toast.makeText(context,"用户密码不能为空",Toast.LENGTH_SHORT).show();
             return null;
-        }else if(s.length() <= 6){
+        }else if(s.length() < 6){
             Toast.makeText(context,"用户密码长度不能小于6位",Toast.LENGTH_SHORT).show();
             return null;
         }else if(s.length() > 15){

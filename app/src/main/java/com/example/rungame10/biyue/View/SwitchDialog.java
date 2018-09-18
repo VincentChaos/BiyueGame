@@ -45,6 +45,7 @@ public class SwitchDialog extends AlertDialog {
 
         final SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
         String nameStr = "用户名称： " + sharedPreferences.getString("user_name","");
+        final String openId = sharedPreferences.getString("openid","");
         nameText.setText(nameStr);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +67,7 @@ public class SwitchDialog extends AlertDialog {
                     Config.logoutCallBack.onResponse(ResultCode.LOGOUT_SUCCESS);
                 }else {
                     Config.isLogined = true;
-                    Config.loginCallBack.onResponse(ResultCode.LOGIN_SUCCESS);
+                    Config.loginCallBack.onResponse(ResultCode.LOGIN_SUCCESS,openId);
                 }
             }
         });

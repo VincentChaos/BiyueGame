@@ -1,5 +1,10 @@
 package com.example.rungame10.biyue.Intf;
 
+
 public interface LoginCallBack {
-     void onResponse(final int resultCode);
+     /**
+      * @param resultCode
+      * @param openId
+      */
+     void onResponse(final int resultCode,String openId);
 }

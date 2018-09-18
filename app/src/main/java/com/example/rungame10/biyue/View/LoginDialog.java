@@ -61,7 +61,7 @@ public class LoginDialog extends AlertDialog {
             // do something
             switch (msg.what){
                 case 0:
-                    Config.loginCallBack.onResponse(ResultCode.LOGIN_FAIL);
+                    Config.loginCallBack.onResponse(ResultCode.LOGIN_FAIL,"");
                     NotifyDialog notifyDialog = new NotifyDialog(context,(String) msg.obj);
                     notifyDialog.show();
                     break;
@@ -77,10 +77,14 @@ public class LoginDialog extends AlertDialog {
     protected void onCreate(Bundle savedInstanceState) {
          // TODO Auto-generated method stub
          super.onCreate(savedInstanceState);
-         init();
-     }
+        try {
+            init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-     private void init(){
+     private void init() throws Exception {
          LayoutInflater inflater = LayoutInflater.from(context);
          View view = inflater.inflate(MResource.getIdByName(context, "layout", "by_dialog_login"),null);
          setContentView(view);

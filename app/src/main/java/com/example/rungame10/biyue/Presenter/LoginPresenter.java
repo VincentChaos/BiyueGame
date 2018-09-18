@@ -33,12 +33,13 @@ public class LoginPresenter {
         this.loginDialog = loginDialog;
     }
 
-    public void setAccount(EditText accountEdit, EditText pwdEdit){
+    public void setAccount(EditText accountEdit, EditText pwdEdit) throws Exception {
         //若SharedPreferences中有保存的账号密码，则自动显示在账号及密码编辑框中
         SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
         if (sharedPreferences.contains("account") && sharedPreferences.contains("password")){
             accountEdit.setText(sharedPreferences.getString("account",""));
-            pwdEdit.setText(sharedPreferences.getString("password",""));
+            String pwdStr = DES.getDESOri(sharedPreferences.getString("password",""),DES.KEY);
+            pwdEdit.setText(pwdStr);
         }
     }
 
@@ -99,12 +100,17 @@ public class LoginPresenter {
                             //保存用户名密码至SharedPreferences
                             SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("account",account);
-                            editor.putString("password",pwd);
-                            editor.putString("user_name",getResponse.getUsername());
-                            editor.putString("openid",getResponse.getOpenid());
-                            editor.putString("have_phone",getResponse.getHavePhone());
-                            editor.apply();
+
+                            try {
+                                editor.putString("account",account);
+                                editor.putString("user_name",getResponse.getUsername());
+                                editor.putString("password",DES.getDES(pwd,DES.KEY));
+                                editor.putString("openid",getResponse.getOpenid());
+                                editor.putString("have_phone",getResponse.getHavePhone());
+                                editor.apply();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
                             //调用弹出通知窗口方法
                             loginDialog.showNotifyDialog(returnWord,1);
@@ -155,12 +161,14 @@ public class LoginPresenter {
                         SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear();
-                        editor.putString("account",getResponse.getUsername());
-                        editor.putString("password",getResponse.getPassword());
-                        editor.putString("openid",getResponse.getOpenid());
-                        editor.apply();
-
-
+                        try {
+                            editor.putString("account",getResponse.getUsername());
+                            editor.putString("password",DES.getDES(getResponse.getPassword(),DES.KEY));
+                            editor.putString("openid",getResponse.getOpenid());
+                            editor.apply();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         loginDialog.showNotifyDialog(returnWord,2);
                     }else {
                         loginDialog.showNotifyDialog((String )response.getMsg());
@@ -222,13 +230,16 @@ public class LoginPresenter {
                         //保存用户名密码至SharedPreferences
                         SharedPreferences sharedPreferences = context.getSharedPreferences("user_info",Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("account",account);
-                        editor.putString("password",password);
-                        editor.putString("user_name",getResponse.getUsername());
-                        editor.putString("openid",getResponse.getOpenid());
-                        editor.putString("have_phone",getResponse.getHavePhone());
-                        editor.apply();
-
+                        try {
+                            editor.putString("account",account);
+                            editor.putString("user_name",getResponse.getUsername());
+                            editor.putString("password",DES.getDES(password,DES.KEY));
+                            editor.putString("openid",getResponse.getOpenid());
+                            editor.putString("have_phone",getResponse.getHavePhone());
+                            editor.apply();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         //调用弹出通知窗口方法
                         loginDialog.showNotifyDialog(returnWord,1);
                     }else {
@@ -249,7 +260,7 @@ public class LoginPresenter {
         if (s.equals("")){
             Toast.makeText(context,"用户账号不能为空",Toast.LENGTH_SHORT).show();
             return null;
-        }else if(s.length() <= 6){
+        }else if(s.length() < 6){
             Toast.makeText(context,"用户账号长度不能小于6位",Toast.LENGTH_SHORT).show();
             return null;
         }else if(s.length() > 15){
@@ -267,7 +278,7 @@ public class LoginPresenter {
         if (s.equals("")){
             Toast.makeText(context,"用户密码不能为空",Toast.LENGTH_SHORT).show();
             return null;
-        }else if(s.length() <= 6){
+        }else if(s.length() < 6){
             Toast.makeText(context,"用户密码长度不能小于6位",Toast.LENGTH_SHORT).show();
             return null;
         }else if(s.length() > 15){
